@@ -120,7 +120,7 @@ namespace BoxesProject
 
         public V GetPerent(double x,NodeTree<V> T)
         {
-
+            return Get(x) as V;
         }
         public V Get(double x)
         {

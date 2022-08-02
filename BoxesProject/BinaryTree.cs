@@ -81,15 +81,12 @@ namespace BoxesProject
             InOrder(_root);
         }
 
-        private void InOrder(NodeTree<V> t, double x)
+        private void InOrder(NodeTree<V> t)
         {
             if(t != null)
             {
                 InOrder(t.Left);
-                if(t.KeyNode == x)
-                {
-
-                }
+                Console.WriteLine(t.KeyNode + " ");
                 InOrder(t.Right);
             }
         }
@@ -105,23 +102,111 @@ namespace BoxesProject
                     node = null;
                     return;
                 }
-                //has one child
+                //node has one child
                 if (node.Left != null && node.Right == null)
                 {
-                    
+                    var perent = GetPerent(x) as NodeTree<V> ;
+                    if(perent != null)
+                    {
+                        if(perent.Right == node)   // if perents RIGHT is a node we want to remove
+                        {
+                            perent.Right = node.Left;  // perents RIGHT becomes a nodes LEFT
+                            
+                        }
+                        else
+                        {
+                            perent.Left = node.Left; //else perents LEFT becomes a nodes LEFT
+                        }
+                    }
+                    return;
                 }
                 else if (node.Left == null && node.Right != null)
                 {
+                    var perent = GetPerent(x) as NodeTree<V>;
+                    if (perent != null)
+                    {
+                        if (perent.Right == node)  // if perents LEFT is a node we want to remove
+                        {
+                            perent.Right = node.Right; // perents RIGHT becomes a nodes RIGHT
+                        }
+                        else
+                        {
+                            perent.Left = node.Right; // else perents LEFT becomes a nodes RIGHT
+                        }
+                    }
+                    return;
+                }
 
+                //node has two children
+                if (node.Left != null && node.Right != null)
+                {
+                    var minimum = GetMiniNode(node.Right);
+                    var parant = GetPerent(x) as NodeTree<V>;
+
+                    if (minimum.Right != null) // if minimum has a right node
+                    {
+                        var minPerent = GetPerent(minimum.KeyNode) as NodeTree<V>;  //find out his perent
+                        minPerent.Left = minimum.Right; // minimums perent take a node of the minimum RIGHT node
+                    }
+                    minimum.Left = node.Left;    // 'minimum' takes the RIGHT and LEFT of the 'node'
+                    minimum.Right = node.Right;
+
+                    if (parant.Right == node)   // conecting the nodes perent with the 'minimum'
+                        parant.Right = minimum;
+                    else
+                        parant.Left = minimum;
+                    node = null;
                 }
 
             }
         }
 
-        public V GetPerent(double x,NodeTree<V> T)
+        public NodeTree<V> GetMiniNode(NodeTree<V> t)
         {
-            return Get(x) as V;
+            if(t.Left == null)
+            {
+                return t;
+            }
+            return GetMiniNode(t.Left);
+            
         }
+        // Get the paerent of the object
+        public V GetPerent(double x)
+        {
+            if(_root != null)
+            {
+                return GetPerent(x, _root);
+            }
+            else
+            {
+                return default(V);
+            }
+        }
+        private V GetPerent(double x, NodeTree<V> t)
+        {
+            if (t == null)
+            {
+                return default(V);
+            }
+            if (t.Left != null && t.Left.KeyNode == x)
+            {
+                return t.ValueNode;
+            }
+            else if(t.Right != null && t.Right.KeyNode == x)
+            {
+                return t.ValueNode;
+            }
+            else if (x < t.KeyNode)
+            {
+                return GetPerent(x, t.Left);
+            }
+            else
+            {
+                return GetPerent(x, t.Right);
+            }
+        }
+
+        //Get any object
         public V Get(double x)
         {
             if(_root != null)

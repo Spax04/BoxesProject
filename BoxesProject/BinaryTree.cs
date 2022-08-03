@@ -10,11 +10,12 @@ namespace BoxesProject
     {
         private double _key;
         private T _value;
-
+        private Type type; //?
         public NodeTree(double key)
         {
             _key = key;
-            ///// IS _VALUE NULL????????
+            type = typeof(T);
+            
         }
         private NodeTree<T> _left;
         private NodeTree<T> _right;
@@ -31,6 +32,7 @@ namespace BoxesProject
         }
         public double KeyNode { get { return _key; } }
         public T ValueNode { get { return _value; } set { _value = value; } }
+        public Type Type { get { return type; } }
     }
 
 
@@ -58,14 +60,14 @@ namespace BoxesProject
                 AddNode(x, _root);
         }
 
-        private void AddNode(double x, NodeTree<V> t)
+        private NodeTree<V> AddNode(double x, NodeTree<V> t)
         {
             if (x < t.KeyNode)
             {
                 if (t.Left == null)
                 {
                     t.Left = new NodeTree<V>(x);
-                    
+                    return t.Left;
                 }
                 else
                     AddNode(x, t.Left);
@@ -73,10 +75,14 @@ namespace BoxesProject
             else
             {
                 if (t.Right == null)
+                {
                     t.Right = new NodeTree<V>(x);
+                    return t.Right;
+                }
                 else
                     AddNode(x, t.Right);
             }
+            return t;
         }
 
         public void InOrder()
@@ -219,27 +225,24 @@ namespace BoxesProject
         }
 
         //Get any object
-        public V Get(double x)
+        public NodeTree<V> Get(double x)
         {
-            if(_root != null)
-            {
+            if (_root != null)
                 return Get(x, _root);
-            }
             else
-            {
-                return default(V);
-            }
+                throw new InvalidOperationException("Root is empty");
+            
            
         }
-        private V Get(double x, NodeTree<V> t)
+        private NodeTree<V> Get(double x, NodeTree<V> t)
         {
             if (t == null)
             {
-                return default(V);
+                return null;
             }
             if (x == t.KeyNode)
             {
-                return t.ValueNode;
+                return t.ValueNode as NodeTree<V>;
             }
             else if(x < t.KeyNode)
             {

@@ -10,22 +10,16 @@ namespace BoxesProject
     {
         static void Main(string[] args)
         {
-            BinaryTree<BinaryTree<Box>> tree = new BinaryTree<BinaryTree<Box>>();
+            TreeMenenger tree = new TreeMenenger();
 
-            tree.AddNode(5);
-            tree.AddNode(6);
-            tree.AddNode(4);
-            tree.AddNode(8);
-            tree.AddNode(10);
-            tree.AddNode(3);
-            tree.AddNode(4.5);
-            tree.AddNode(4.3);
-            tree.AddNode(4.7);
-            tree.AddNode(4.8);
-            tree.AddNode(4.6);
-            tree.InOrder();
+            tree.AddNodeAndValue(5);
+            
+            tree.AddNodeAndValue(6);
+            tree.AddNodeAndValue(4);
+            tree.AddValue(5);
+            tree.Tree.InOrder();
 
-            tree._root.ValueNode.AddNode(5);
+          
           /*  Console.WriteLine("====================");
            tree.RemoveNode(4.5);
             tree.InOrder();*/

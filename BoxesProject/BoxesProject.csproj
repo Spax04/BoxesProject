@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="BinaryTree.cs" />
     <Compile Include="Box.cs" />
-    <Compile Include="CustomerRequest.cs" />
+    <Compile Include="TreeMenenger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

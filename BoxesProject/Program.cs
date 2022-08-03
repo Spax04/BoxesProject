@@ -24,9 +24,13 @@ namespace BoxesProject
             tree.AddNode(4.8);
             tree.AddNode(4.6);
             tree.InOrder();
-            Console.WriteLine("====================");
+
+            tree._root.ValueNode.AddNode(5);
+          /*  Console.WriteLine("====================");
            tree.RemoveNode(4.5);
-            tree.InOrder();
+            tree.InOrder();*/
+
+            
         }
 
         // Tree<tree> => tree.Node<tree> => tree.node<box> 

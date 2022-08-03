@@ -14,6 +14,7 @@ namespace BoxesProject
         public NodeTree(double key)
         {
             _key = key;
+            ///// IS _VALUE NULL????????
         }
         private NodeTree<T> _left;
         private NodeTree<T> _right;
@@ -31,19 +32,18 @@ namespace BoxesProject
         public double KeyNode { get { return _key; } }
         public T ValueNode { get { return _value; } set { _value = value; } }
     }
+
+
+
+
+
+
+
+
+
+
     public class BinaryTree<V>
     {
-        
-
-        public class PublishNodeTree<T>
-        {
-            private double _key;
-            private T _value;
-
-            public double KeyNode { get { return _key; } }
-            public T ValueNode { get { return _value; } }
-        }
-
         public NodeTree<V> _root;
         public BinaryTree()
         {
@@ -63,7 +63,10 @@ namespace BoxesProject
             if (x < t.KeyNode)
             {
                 if (t.Left == null)
+                {
                     t.Left = new NodeTree<V>(x);
+                    
+                }
                 else
                     AddNode(x, t.Left);
             }
@@ -89,6 +92,14 @@ namespace BoxesProject
                 Console.WriteLine(t.KeyNode + " ");
                 InOrder(t.Right);
             }
+        }
+
+        public void addValue(NodeTree<V> t)
+        {
+            if(t.ValueNode.GetType() == typeof(BinaryTree<Box>))
+            {
+            }
+
         }
 
         public void RemoveNode(double x)
@@ -160,7 +171,6 @@ namespace BoxesProject
 
             }
         }
-
         public NodeTree<V> GetMiniNode(NodeTree<V> t)
         {
             if(t.Left == null)
@@ -170,6 +180,8 @@ namespace BoxesProject
             return GetMiniNode(t.Left);
             
         }
+
+
         // Get the paerent of the object
         public V GetPerent(double x)
         {

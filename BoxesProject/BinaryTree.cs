@@ -10,12 +10,12 @@ namespace BoxesProject
     {
         private double _key;
         private T _value;
-        private Type type; //?
-        public NodeTree(double key)
+       
+        public NodeTree(double key, T type)
         {
             _key = key;
-            type = typeof(T);
-            
+            _value = type;
+            // if value null(isnt exist) i cant get asecond  binary tree
         }
         private NodeTree<T> _left;
         private NodeTree<T> _right;
@@ -32,7 +32,6 @@ namespace BoxesProject
         }
         public double KeyNode { get { return _key; } }
         public T ValueNode { get { return _value; } set { _value = value; } }
-        public Type Type { get { return type; } }
     }
 
 
@@ -47,42 +46,43 @@ namespace BoxesProject
     public class BinaryTree<V>
     {
         public NodeTree<V> _root;
+        
         public BinaryTree()
         {
             _root = null;
         }
 
-        public void AddNode(double x)
+        public void AddNode(double x,V BValue)
         {
             if (_root == null)
-                _root = new NodeTree<V>(x);
+                _root = new NodeTree<V>(x,BValue);
             else
-                AddNode(x, _root);
+                AddNode(x, _root,BValue);
         }
 
-        private NodeTree<V> AddNode(double x, NodeTree<V> t)
+        private void AddNode(double x, NodeTree<V> t,V BValue)
         {
             if (x < t.KeyNode)
             {
                 if (t.Left == null)
                 {
-                    t.Left = new NodeTree<V>(x);
-                    return t.Left;
+                    t.Left = new NodeTree<V>(x,BValue);
+                    
                 }
                 else
-                    AddNode(x, t.Left);
+                    AddNode(x, t.Left,BValue);
             }
             else
             {
                 if (t.Right == null)
                 {
-                    t.Right = new NodeTree<V>(x);
-                    return t.Right;
+                    t.Right = new NodeTree<V>(x,BValue);
+                    
                 }
                 else
-                    AddNode(x, t.Right);
+                    AddNode(x, t.Right,BValue);
             }
-            return t;
+            
         }
 
         public void InOrder()
@@ -225,7 +225,7 @@ namespace BoxesProject
         }
 
         //Get any object
-        public NodeTree<V> Get(double x)
+        public V Get(double x)
         {
             if (_root != null)
                 return Get(x, _root);
@@ -234,15 +234,11 @@ namespace BoxesProject
             
            
         }
-        private NodeTree<V> Get(double x, NodeTree<V> t)
+        private V Get(double x, NodeTree<V> t)
         {
-            if (t == null)
-            {
-                return null;
-            }
             if (x == t.KeyNode)
             {
-                return t.ValueNode as NodeTree<V>;
+                return t.ValueNode; // this returns null!!!  // it returns null bcs Valuee isnt created
             }
             else if(x < t.KeyNode)
             {

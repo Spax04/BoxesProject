@@ -14,38 +14,24 @@ namespace BoxesProject
         public TreeMenenger()
         {
             _tree = new BinaryTree<BinaryTree<Box>>();
-            
-           
         }
 
         public BinaryTree<BinaryTree<Box>> Tree { get { return _tree; } set { _tree = value; } }
-        public void AddNodeAndValue(double x)
+        public void AddNode(double x)
         {
-            _tree.AddNode(x);
-           
+            _tree.AddNode(x,new BinaryTree<Box>());
         }
 
-        public void AddValue(double x)
+        public void AddInnerNode(double x, double y)
         {
-            NodeTree<BinaryTree<Box>> t = _tree.Get(x);  //why t is null???
-            t.ValueNode = new BinaryTree<Box>();
+            var a = _tree.Get(x);
+            a.AddNode(y,new Box());
         }
 
-        public void AddInnerNodeAndValue(double x, double y)
+        public Box GetBox(double x, double y)
         {
-            NodeTree<BinaryTree<Box>> a = _tree.Get(x);
-            a.ValueNode.AddNode(y);
-        }
-
-        public void AddInnerValue(NodeTree<Box> inner)
-        {
-            inner.ValueNode = new Box();
-        }
-
-        public NodeTree<Box> GetInnerNode(double x,double y)
-        {
-            NodeTree<BinaryTree<Box>> a = _tree.Get(x);
-           NodeTree<Box> b = a.ValueNode.Get(y);
+            BinaryTree<Box> a = _tree.Get(x) ;
+            Box b = a.Get(y);
             return b;
         }
     }

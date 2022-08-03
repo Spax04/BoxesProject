@@ -11,13 +11,19 @@ namespace BoxesProject
         static void Main(string[] args)
         {
             TreeMenenger tree = new TreeMenenger();
+            BinaryTree<BinaryTree<Box>> binaryTree = new BinaryTree<BinaryTree<Box>>();
+            binaryTree.AddNode(5, new BinaryTree<Box>());
+            binaryTree.AddNode(6, new BinaryTree<Box>());
+            binaryTree.AddNode(4, new BinaryTree<Box>());
 
-            tree.AddNodeAndValue(5);
+            var a = binaryTree.Get(5);
+            
+            /*tree.AddNodeAndValue(5);
             
             tree.AddNodeAndValue(6);
             tree.AddNodeAndValue(4);
             tree.AddValue(5);
-            tree.Tree.InOrder();
+            tree.Tree.InOrder();*/
 
           
           /*  Console.WriteLine("====================");

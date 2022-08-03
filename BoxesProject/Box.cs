@@ -30,6 +30,11 @@ namespace BoxesProject
             else
                 return false;
         }
+
+        public override string ToString()
+        {
+            return _count.ToString();
+        }
         public int Count { get { return _count; } }
         public DateTime Date { get { return _date; } }
     }

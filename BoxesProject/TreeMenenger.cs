@@ -28,6 +28,18 @@ namespace BoxesProject
             a.AddNode(y,new Box());
         }
 
+        public void AddBox(double x,double y)
+        {
+            Box box = GetBox(x,y);
+            box.AddBox();
+        }
+
+        public void testPrint(double x,double y)
+        {
+            Box b = GetBox(x,y);
+            Console.WriteLine(b); 
+        }
+
         public Box GetBox(double x, double y)
         {
             BinaryTree<Box> a = _tree.Get(x) ;

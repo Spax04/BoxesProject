@@ -32,9 +32,7 @@ namespace Boxes.DAL
 
         public void Init()
         {
-            _tree.AddNode(5,new BinaryTree<Box>());
-            _tree.AddNode(6, new BinaryTree<Box>());
-            _tree.AddNode(4, new BinaryTree<Box>());
+           
         }
             
         

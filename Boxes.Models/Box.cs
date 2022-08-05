@@ -21,9 +21,9 @@ namespace Boxes.Models
             _height = y;
         }
 
-        public void AddBox()
+        public void AddBox(int count)
         {
-            _count++;
+            FillBoxes(count);
         }
         public bool RequestBox()
         {
@@ -40,7 +40,7 @@ namespace Boxes.Models
             if (_count > MaxCount)
             {
                 _count = MaxCount;
-                Console.WriteLine("There are to much boaxes. Current count was returned to '100'. ");
+                Console.WriteLine("There are to much boxes. Current count was returned to '100'. ");
             }
         }
 

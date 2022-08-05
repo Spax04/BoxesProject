@@ -26,10 +26,10 @@ namespace Boxes.DAL
         /// </summary>
         /// <param name="x">width of the box</param>
         /// <param name="y">height of the box</param>
-        public void AddInnerNode(double x, double y,int count)
+        public void AddInnerBTree(double x, double y,int count)
         {
             var a = _context.Tree.GetValue(x);
-            a.AddNode(y, new Box(count));
+            a.AddNode(y, new Box(x,y,count));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Boxes.DAL
         /// </summary>
         /// <param name="x">width of the box</param>
         /// <returns></returns>
-        public BinaryTree<Box> GetInnerNode(double x) // geting inner tree
+        public BinaryTree<Box> GetInnerBTree(double x) // geting inner tree
         {
             return _context.Tree.GetValue(x);
         }

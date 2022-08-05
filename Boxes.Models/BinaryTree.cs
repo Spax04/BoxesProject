@@ -203,13 +203,17 @@ namespace Boxes.Models
             if (_root != null)
                 return GetValue(x, _root);
             else
-                throw new InvalidOperationException("Root is empty");
+                return default(V);
             
            
         }
 
         private V GetValue(double x, NodeTree<V> t)
         {
+            if(t == null)
+            {
+                return default(V);
+            }
             if (x == t.KeyNode)
             {
                 return t.ValueNode; // this returns null!!!  // it returns null bcs Valuee isnt created
@@ -229,7 +233,7 @@ namespace Boxes.Models
             if (_root != null)
                 return GetNode(x, _root);
             else
-                throw new InvalidOperationException("Root is empty");
+                return null;
 
 
         }

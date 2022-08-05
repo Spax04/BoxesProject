@@ -12,7 +12,7 @@ namespace Boxes.DAL
         private static DataMock _context = DataMock.Instans;
 
         TreeRepository _treeRepository = new TreeRepository();
-        public void AddBoxToDB(double x, double y)
+        public void AddBoxToDB(double x, double y,int count)
         {
             Box box = GetBox(x, y); // checking if a box already exist
             if(box == null) // if size doesnt exist, db creats a new size
@@ -23,7 +23,7 @@ namespace Boxes.DAL
                     _treeRepository.AddTreeNode(x);
                 }
                 
-                _treeRepository.AddInnerNode(x,y);
+                _treeRepository.AddInnerNode(x,y,count);
             }
             else
             {
@@ -47,20 +47,20 @@ namespace Boxes.DAL
             }
         }
 
-        public void RefillBoxes(double x, double y)
+        public void RefillBoxes(double x, double y,int count)
         {
             Box a = GetBox(x, y);
             if (a != null) // if Box exist it will be refill
             {
-                a.FillBoxes();
+                a.FillBoxes(count);
             }
             else //else a new box size was created widt max amount
             {
-                _treeRepository.AddInnerNode(x, y);
+                _treeRepository.AddInnerNode(x, y,count);
             }
         }
 
-        public void testPrint(double x, double y) // DONT FORGET REMOVE
+        public void PrintDitales(double x, double y) // DONT FORGET REMOVE
         {
             Box b = GetBox(x, y);
             Console.WriteLine(b);

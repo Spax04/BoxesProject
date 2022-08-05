@@ -13,7 +13,7 @@ namespace Boxes.Models
         {
             BoxRepository br = new BoxRepository();
 
-            br.AddBoxToDB(5, 5);
+            br.AddBoxToDB(5, 5,100);
             
         }
 

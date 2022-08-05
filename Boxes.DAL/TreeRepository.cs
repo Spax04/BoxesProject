@@ -26,10 +26,10 @@ namespace Boxes.DAL
         /// </summary>
         /// <param name="x">width of the box</param>
         /// <param name="y">height of the box</param>
-        public void AddInnerNode(double x, double y)
+        public void AddInnerNode(double x, double y,int count)
         {
             var a = _context.Tree.GetValue(x);
-            a.AddNode(y, new Box());
+            a.AddNode(y, new Box(count));
         }
 
         /// <summary>

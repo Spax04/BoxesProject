@@ -4,45 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoxesProject
+namespace Boxes.Models
 {
-    public class NodeTree<T>
-    {
-        private double _key;
-        private T _value;
-       
-        public NodeTree(double key, T type)
-        {
-            _key = key;
-            _value = type;
-            // if value null(isnt exist) i cant get asecond  binary tree
-        }
-        private NodeTree<T> _left;
-        private NodeTree<T> _right;
-
-        public NodeTree<T> Left
-        {
-            get { return _left; }
-            set { _left = value; }
-        }
-        public NodeTree<T> Right
-        {
-            get { return _right; }
-            set { _right = value; }
-        }
-        public double KeyNode { get { return _key; } }
-        public T ValueNode { get { return _value; } set { _value = value; } }
-    }
-
-
-
-
-
-
-
-
-
-
     public class BinaryTree<V>
     {
         public NodeTree<V> _root;
@@ -110,19 +73,27 @@ namespace BoxesProject
 
         public void RemoveNode(double x)
         {
-            var node = Get(x) as NodeTree<V>;
-            if(node != null)
+            var node = GetNode(x);
+            var perent = GetPerent(x);
+            if (node != null)
             {
-                // best case
+                // best case - node dosent have any child nodes
                 if(node.Left == null && node.Right == null)
                 {
-                    node = null;
+                    
+                    if(perent.Left == node)
+                    {
+                        perent.Left = null;
+                    }
+                    else
+                    {
+                        perent.Right = null;
+                    }
                     return;
                 }
                 //node has one child
                 if (node.Left != null && node.Right == null)
                 {
-                    var perent = GetPerent(x) as NodeTree<V> ;
                     if(perent != null)
                     {
                         if(perent.Right == node)   // if perents RIGHT is a node we want to remove
@@ -139,7 +110,6 @@ namespace BoxesProject
                 }
                 else if (node.Left == null && node.Right != null)
                 {
-                    var perent = GetPerent(x) as NodeTree<V>;
                     if (perent != null)
                     {
                         if (perent.Right == node)  // if perents LEFT is a node we want to remove
@@ -158,21 +128,24 @@ namespace BoxesProject
                 if (node.Left != null && node.Right != null)
                 {
                     var minimum = GetMiniNode(node.Right);
-                    var parant = GetPerent(x) as NodeTree<V>;
-
+                    var minPerent = GetPerent(minimum.KeyNode); //find out his perent
                     if (minimum.Right != null) // if minimum has a right node
-                    {
-                        var minPerent = GetPerent(minimum.KeyNode) as NodeTree<V>;  //find out his perent
+                    {  
                         minPerent.Left = minimum.Right; // minimums perent take a node of the minimum RIGHT node
                     }
-                    minimum.Left = node.Left;    // 'minimum' takes the RIGHT and LEFT of the 'node'
-                    minimum.Right = node.Right;
+                    minimum.Left = node.Left;                    // 'minimum' takes the RIGHT and LEFT of the 'node'
+                    if(node.Right != minimum)
+                        minimum.Right = node.Right;
+                    if(minPerent.Left == minimum)
+                    {
+                        minPerent.Left = null;
+                    }
 
-                    if (parant.Right == node)   // conecting the nodes perent with the 'minimum'
-                        parant.Right = minimum;
+                    if (perent.Right == node)   // conecting the nodes perent with the 'minimum'
+                        perent.Right = minimum;
                     else
-                        parant.Left = minimum;
-                    node = null;
+                        perent.Left = minimum;
+                   
                 }
 
             }
@@ -189,7 +162,7 @@ namespace BoxesProject
 
 
         // Get the paerent of the object
-        public V GetPerent(double x)
+        public NodeTree<V> GetPerent(double x)
         {
             if(_root != null)
             {
@@ -197,22 +170,22 @@ namespace BoxesProject
             }
             else
             {
-                return default(V);
+                return null;
             }
         }
-        private V GetPerent(double x, NodeTree<V> t)
+        private NodeTree<V> GetPerent(double x, NodeTree<V> t)
         {
             if (t == null)
             {
-                return default(V);
+                return null;
             }
             if (t.Left != null && t.Left.KeyNode == x)
             {
-                return t.ValueNode;
+                return t;
             }
             else if(t.Right != null && t.Right.KeyNode == x)
             {
-                return t.ValueNode;
+                return t;
             }
             else if (x < t.KeyNode)
             {
@@ -225,16 +198,17 @@ namespace BoxesProject
         }
 
         //Get any object
-        public V Get(double x)
+        public V GetValue(double x)
         {
             if (_root != null)
-                return Get(x, _root);
+                return GetValue(x, _root);
             else
                 throw new InvalidOperationException("Root is empty");
             
            
         }
-        private V Get(double x, NodeTree<V> t)
+
+        private V GetValue(double x, NodeTree<V> t)
         {
             if (x == t.KeyNode)
             {
@@ -242,12 +216,48 @@ namespace BoxesProject
             }
             else if(x < t.KeyNode)
             {
-                return Get(x, t.Left);
+                return GetValue(x, t.Left);
             }
             else
             {
-                return Get(x, t.Right);
+                return GetValue(x, t.Right);
             }
+        }
+
+        public NodeTree<V> GetNode(double x)
+        {
+            if (_root != null)
+                return GetNode(x, _root);
+            else
+                throw new InvalidOperationException("Root is empty");
+
+
+        }
+
+        private NodeTree<V> GetNode(double x, NodeTree<V> t)
+        {
+            if (x == t.KeyNode)
+            {
+                return t; // this returns null!!!  // it returns null bcs Valuee isnt created
+            }
+            else if (x < t.KeyNode)
+            {
+                return GetNode(x, t.Left);
+            }
+            else
+            {
+                return GetNode(x, t.Right);
+            }
+        }
+
+        public bool IfExist(double x)
+        {
+            NodeTree<V> t = GetNode(x);
+            if(t == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoxesProject
+namespace Boxes.Models
 {
     public class Box
     {
         private int _count;
         private DateTime _date;
-
+        private const int MaxBoxes = 10;
         public Box()
         {
-            _count = 1;
+            _count = MaxBoxes;
             _date = DateTime.Now;
         }
 
@@ -21,7 +21,7 @@ namespace BoxesProject
         {
             _count++;
         }
-        public bool GetBox()
+        public bool RequestBox()
         {
             _date = DateTime.Now;
             _count--;
@@ -29,6 +29,10 @@ namespace BoxesProject
                 return true;
             else
                 return false;
+        }
+        public void FillBoxes() 
+        {
+            _count = MaxBoxes;
         }
 
         public override string ToString()

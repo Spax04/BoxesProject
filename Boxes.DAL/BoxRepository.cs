@@ -49,6 +49,11 @@ namespace Boxes.DAL
             if(a == null)
             {
                 a = _context.Tree.FindCloserTree(x);
+                if(a== null)
+                {
+                    Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                    return;
+                }
                 Console.WriteLine("We didnt find the WIDTH you asked. Most closer WIDTH is: " + a._root.KeyNode);
             }
 
@@ -56,12 +61,21 @@ namespace Boxes.DAL
             if (b == null)
             {
                 b = a.FindCloserTree(y);
+                if(b== null)
+                {
+                    Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                    return;
+                }
                 Console.WriteLine("We didnt find the HEIGHT you asked. Most closer HEIGHT is: " + b.Height);
             }
 
-            
-            b.RequestBox();
             Console.WriteLine(b);
+            if (b.RequestBox())
+            {
+                Console.WriteLine("There is a last one box in stack.");
+                a.RemoveNode(b.Height);
+            }
+           
         }
 
         public void RefillBoxes(double x, double y, int count)

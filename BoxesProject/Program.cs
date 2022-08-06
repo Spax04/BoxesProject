@@ -18,7 +18,7 @@ namespace Boxes.Models
             br.AddBoxToDB(5, 5, 100);
             br.AddBoxToDB(5, 5, 100);
             br.AddBoxToDB(5, 6,100);
-            br.AddBoxToDB(5, 4, 100);
+            br.AddBoxToDB(5, 4, 2);
 
             br.AddBoxToDB(6, 5, 100);
             br.AddBoxToDB(6, 6, 100);
@@ -41,7 +41,8 @@ namespace Boxes.Models
             Console.WriteLine("================");
             br.PrintDitales(5, 5);
 
-            br.CustomreBoxRequest(5, 3);
+            br.CustomreBoxRequest(4, 10);
+
         }
 
        

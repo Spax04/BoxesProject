@@ -50,5 +50,7 @@ namespace Boxes.Models
         }
         public int Count { get { return _count; } }
         public DateTime Date { get { return _date; } }
+        public double Width { get { return _width; } }
+        public double Height { get { return _height; } }
     }
 }

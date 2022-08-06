@@ -234,15 +234,13 @@ namespace Boxes.Models
                 return GetNode(x, _root);
             else
                 return null;
-
-
         }
 
         private NodeTree<V> GetNode(double x, NodeTree<V> t)
         {
             if (x == t.KeyNode)
             {
-                return t; // this returns null!!!  // it returns null bcs Valuee isnt created
+                return t; 
             }
             else if (x < t.KeyNode)
             {
@@ -262,6 +260,57 @@ namespace Boxes.Models
                 return false;
             }
             return true;
+        }
+
+        public bool find(double x)
+        {
+            return find(x, _root);
+        }
+
+        private bool find(double x, NodeTree<V> t)
+        {
+            if (t == null)
+                return false;
+            if (t.KeyNode == x)
+                return true;
+            return find(x, t.Left) || find(x, t.Right);
+        }
+
+        public V FindCloserTree(double x)
+        {
+            V a = FindCloserTree(x,0.5,_root);
+            if(a == null)
+            {
+                a = FindCloserTree(x,0.75,_root);
+                if(a == null)
+                {
+                    a = FindCloserTree(x, 2, _root);
+                }
+            }
+            return a;
+        }
+
+        public V FindCloserTree(double x,double prosent, NodeTree<V> t)
+        {
+            double maxRange = x;
+            maxRange += x * prosent;
+
+            if(t == null)
+            {
+                return default(V);
+            }
+            if (t.KeyNode < maxRange && t.KeyNode > x)
+            {
+                return t.ValueNode;
+            }else if(t.KeyNode > maxRange)
+            {
+                return FindCloserTree(x,prosent, t.Left);
+            }
+            else
+            {
+                return FindCloserTree(x, prosent, t.Right);
+            }
+            
         }
     }
 }

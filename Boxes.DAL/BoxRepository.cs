@@ -43,6 +43,27 @@ namespace Boxes.DAL
             }
         }
 
+        public void CustomreBoxRequest(double x,double y)
+        {
+            var a = _treeRepository.GetInnerBTree(x);
+            if(a == null)
+            {
+                a = _context.Tree.FindCloserTree(x);
+                Console.WriteLine("We didnt find the WIDTH you asked. Most closer WIDTH is: " + a._root.KeyNode);
+            }
+
+            var b = GetBox(x, y);
+            if (b == null)
+            {
+                b = a.FindCloserTree(y);
+                Console.WriteLine("We didnt find the HEIGHT you asked. Most closer HEIGHT is: " + b.Height);
+            }
+
+            
+            b.RequestBox();
+            Console.WriteLine(b);
+        }
+
         public void RefillBoxes(double x, double y, int count)
         {
             Box a = GetBox(x, y);
@@ -58,7 +79,7 @@ namespace Boxes.DAL
 
 
         // Printings -----------------
-        public void PrintDitales(double x, double y) // DONT FORGET REMOVE
+        public void PrintDitales(double x, double y) 
         {
             Box b = GetBox(x, y);
             Console.WriteLine(b);

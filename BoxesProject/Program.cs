@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Boxes.DAL;
+using Boxes.Models;
 using System.Threading.Tasks;
 
 namespace Boxes.Models
@@ -40,7 +41,7 @@ namespace Boxes.Models
             Console.WriteLine("================");
             br.PrintDitales(5, 5);
 
-
+            br.CustomreBoxRequest(5, 3);
         }
 
        

@@ -45,7 +45,7 @@
     <Compile Include="DataMock.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TreeRepository.cs" />
+    <Compile Include="TreeMenengar.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Boxes.Models\Boxes.Models.csproj">

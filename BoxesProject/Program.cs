@@ -14,19 +14,18 @@ namespace Boxes.Models
         {
             BoxRepository br = new BoxRepository();
 
-            br.AddBoxToDB(5, 5,100);
-            br.AddBoxToDB(5, 5, 100);
-            br.AddBoxToDB(5, 5, 100);
-            br.AddBoxToDB(5, 6,100);
-            br.AddBoxToDB(5, 4, 2);
+           
+            br.AddBoxToDB(5, 5, 5);
+            br.AddBoxToDB(5, 6,5);
+            br.AddBoxToDB(5, 4, 5);
 
-            br.AddBoxToDB(6, 5, 100);
-            br.AddBoxToDB(6, 6, 100);
-            br.AddBoxToDB(6, 4, 100);
+            br.AddBoxToDB(6, 5, 5);
+            br.AddBoxToDB(6, 6, 5);
+            br.AddBoxToDB(6, 4, 5);
 
-            br.AddBoxToDB(4, 5, 100);
-            br.AddBoxToDB(4, 6, 100);
-            br.AddBoxToDB(4, 4, 100);
+            br.AddBoxToDB(4, 5, 5);
+            br.AddBoxToDB(4, 6, 5);
+            br.AddBoxToDB(4, 4, 5);
 
             br.PrintWidths();
             Console.WriteLine("================");
@@ -39,9 +38,9 @@ namespace Boxes.Models
             Console.WriteLine("'6 tree'");
             br.PrintHeights(6);
             Console.WriteLine("================");
-            br.PrintDitales(5, 5);
+           
 
-            br.CustomreBoxRequest(4, 10);
+            br.CustomreBoxRequest(5, 5,15);
 
         }
 

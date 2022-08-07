@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Boxes.DAL
 {
-    public class TreeRepository 
+    public class TreeMenengar 
     {
         private static DataMock _context = DataMock.Instans;
 

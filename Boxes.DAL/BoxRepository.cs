@@ -11,71 +11,62 @@ namespace Boxes.DAL
     {
         private static DataMock _context = DataMock.Instans;
 
-        TreeRepository _treeRepository = new TreeRepository();
+        TreeMenengar _treeMenengar = new TreeMenengar();
         public void AddBoxToDB(double x, double y, int count)
         {
-            var a = _treeRepository.GetInnerBTree(x);
+            var a = _treeMenengar.GetInnerBTree(x);
             var b = GetBox(x, y);
 
             if (a == null)
-                _treeRepository.AddTreeNode(x);
+                _treeMenengar.AddTreeNode(x);
             if (b == null)
-                _treeRepository.AddInnerBTree(x, y, count);
+                _treeMenengar.AddInnerBTree(x, y, count);
             else
                 b.AddBox(count);  // add 'count' boxes if a box already exist;
         }
 
-        public Box GetBox(double x, double y)
-        {
-            BinaryTree<Box> a = _treeRepository.GetInnerBTree(x);
 
-            if (a == null) return null;
-            return a.GetValue(y);
-        }
-
-        public void RemoveBox(double x, double y)
+        private Box CustomreBoxRequest(double x,double y)
         {
-            Box box = GetBox(x, y);
-            if (box.RequestBox())
-            {
-                var a = _treeRepository.GetInnerBTree(x);
-                a.RemoveNode(y);
-            }
-        }
-
-        public void CustomreBoxRequest(double x,double y)
-        {
-            var a = _treeRepository.GetInnerBTree(x);
+            var a = _treeMenengar.GetInnerBTree(x);
             if(a == null)
             {
                 a = _context.Tree.FindCloserTree(x);
                 if(a== null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
-                    return;
+                    return null;
                 }
-                Console.WriteLine("We didnt find the WIDTH you asked. Most closer WIDTH is: " + a._root.KeyNode);
+                Console.WriteLine("We didnt find the WIDTH you asked. Most closer WIDTH is: "+ a._root.ValueNode.Width );
             }
 
-            var b = GetBox(x, y);
+            var b = GetBox(a._root.ValueNode.Width, y);
             if (b == null)
             {
                 b = a.FindCloserTree(y);
                 if(b== null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
-                    return;
+                    return null;
                 }
                 Console.WriteLine("We didnt find the HEIGHT you asked. Most closer HEIGHT is: " + b.Height);
             }
 
-            Console.WriteLine(b);
-            if (b.RequestBox())
-            {
-                Console.WriteLine("There is a last one box in stack.");
-                a.RemoveNode(b.Height);
-            }
+            
+            return b;
            
+        }
+        public void CustomreBoxRequest(double x, double y,int count)
+        {
+            Box b = CustomreBoxRequest(x,y);
+            Console.WriteLine(b);
+            int leftRequest = b.RequestBox(count);
+            if (leftRequest > 0 )
+            {
+                Console.WriteLine("There is a last one box in stack. The box was deleted");
+                RemoveBox(b.Width,b.Height);
+                CustomreBoxRequest(b.Width,b.Height,leftRequest);
+            }
         }
 
         public void RefillBoxes(double x, double y, int count)
@@ -87,7 +78,7 @@ namespace Boxes.DAL
             }
             else //else a new box size was created widt max amount
             {
-                _treeRepository.AddInnerBTree(x, y, count);
+                _treeMenengar.AddInnerBTree(x, y, count);
             }
         }
 
@@ -106,8 +97,28 @@ namespace Boxes.DAL
 
         public void PrintHeights(double x)
         {
-            BinaryTree<Box> b = _treeRepository.GetInnerBTree(x);
+            BinaryTree<Box> b = _treeMenengar.GetInnerBTree(x);
             b.InOrder();
+        }
+
+        // Private ------------
+        private Box GetBox(double x, double y)
+        {
+            BinaryTree<Box> a = _treeMenengar.GetInnerBTree(x);
+
+            if (a == null) return null;
+            return a.GetValue(y);
+        }
+
+        private void RemoveBox(double x,double y)
+        {
+            Box box = GetBox(x, y);
+            if(box != null)
+            {
+                var a = _treeMenengar.GetInnerBTree(box.Width);
+                a.RemoveNode(box.Height);
+            }
+            
         }
     }
 }

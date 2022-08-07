@@ -11,6 +11,7 @@ namespace Boxes.Models
         private int _count;
         private DateTime _date;
         private const int MaxCount = 100;
+        private const int MinCount = 10;
         private readonly double _width;
         private readonly double _height;
         public Box(double x,double y,int count)
@@ -25,14 +26,21 @@ namespace Boxes.Models
         {
             FillBoxes(count);
         }
-        public bool RequestBox()
+        public int RequestBox(int countRequest)
         {
             _date = DateTime.Now;
-            _count--;
-            if( _count == 0)
-                return true;
+            _count-=countRequest;
+            if(_count <= MinCount && _count > 0)
+            {
+                Console.WriteLine($"{_count} boxes left.");
+            }
+            if( _count < 0)
+            {
+                Console.WriteLine("Not enough boxes of this size. Missing: " + (_count * -1));
+                return _count * -1;
+            }
             else
-                return false;
+                return 0;
         }
         public void FillBoxes(int count) 
         {

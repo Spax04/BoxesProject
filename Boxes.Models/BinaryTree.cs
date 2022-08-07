@@ -28,24 +28,17 @@ namespace Boxes.Models
             if (x < t.KeyNode)
             {
                 if (t.Left == null)
-                {
                     t.Left = new NodeTree<V>(x,BValue);
-                    
-                }
                 else
                     AddNode(x, t.Left,BValue);
             }
             else
             {
                 if (t.Right == null)
-                {
-                    t.Right = new NodeTree<V>(x,BValue);
-                    
-                }
+                    t.Right = new NodeTree<V>(x,BValue);  
                 else
                     AddNode(x, t.Right,BValue);
             }
-            
         }
 
         public void InOrder()
@@ -140,9 +133,13 @@ namespace Boxes.Models
                     {
                         minPerent.Left = null;
                     }
-
-                    if (perent.Right == node)   // conecting the nodes perent with the 'minimum'
-                        perent.Right = minimum;
+                    if(perent == null)
+                    {
+                        minimum.Left = node.Left;
+                        _root = minimum;
+                        AddNode(minimum.Left.KeyNode,minimum.ValueNode);
+                    }else if(perent.Right == node)
+                        perent.Right = minimum;// conecting the nodes perent with the 'minimum'
                     else
                         perent.Left = minimum;
                    
@@ -290,16 +287,19 @@ namespace Boxes.Models
             return a;
         }
 
-        public V FindCloserTree(double x,double prosent, NodeTree<V> t)
+        private V FindCloserTree(double x,double prosent, NodeTree<V> t)
         {
             double maxRange = x;
-            maxRange += x * prosent;
+            if(prosent == 2)
+                maxRange = x * prosent;
+            else 
+                maxRange += x * prosent;
 
             if(t == null)
             {
                 return default(V);
             }
-            if (t.KeyNode < maxRange && t.KeyNode > x)
+            if (t.KeyNode <= maxRange && t.KeyNode > x)
             {
                 return t.ValueNode;
             }else if(t.KeyNode > maxRange)

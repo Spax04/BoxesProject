@@ -59,6 +59,11 @@ namespace Boxes.DAL
         public void CustomreBoxRequest(double x, double y,int count)
         {
             Box b = CustomreBoxRequest(x,y);
+            if (b == null)
+            {
+                Console.WriteLine("There are not enought boxes for your size.");
+                return;
+            }
             Console.WriteLine(b);
             int leftRequest = b.RequestBox(count);
             if (leftRequest > 0 )

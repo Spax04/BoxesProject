@@ -29,7 +29,11 @@ namespace Boxes.Models
         public int RequestBox(int countRequest)
         {
             _date = DateTime.Now;
-            _count-=countRequest;
+            if(_count > 0)
+            {
+                _count -= countRequest;
+            }
+            
             if(_count <= MinCount && _count > 0)
             {
                 Console.WriteLine($"{_count} boxes left.");

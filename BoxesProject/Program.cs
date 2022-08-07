@@ -40,10 +40,8 @@ namespace Boxes.Models
             Console.WriteLine("================");
            
 
-            br.CustomreBoxRequest(5, 5,15);
+            br.CustomreBoxRequest(5, 5,6);
 
         }
-
-       
     }
 }

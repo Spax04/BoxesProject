@@ -99,6 +99,10 @@ namespace Boxes.Models
                             perent.Left = node.Left; //else perents LEFT becomes a nodes LEFT
                         }
                     }
+                    else
+                    {
+                        _root = node.Left;
+                    }
                     return;
                 }
                 else if (node.Left == null && node.Right != null)
@@ -113,6 +117,10 @@ namespace Boxes.Models
                         {
                             perent.Left = node.Right; // else perents LEFT becomes a nodes RIGHT
                         }
+                    }
+                    else
+                    {
+                        _root = node.Right;
                     }
                     return;
                 }

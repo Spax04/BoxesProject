@@ -12,8 +12,8 @@ namespace Boxes.Models
     {
         static void Main(string[] args)
         {
-            BoxRepository br = new BoxRepository();
-
+            BoxRepository br = BoxRepository.Instans;
+             
            
             br.AddBoxToDB(5, 5, 5);
             br.AddBoxToDB(5, 6,5);

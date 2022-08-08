@@ -9,9 +9,30 @@ namespace Boxes.DAL
 {
     public class BoxRepository
     {
-        private static DataMock _context = DataMock.Instans;
+       // private static DataMock _context = DataMock.Instans;
 
-        TreeMenengar _treeMenengar = new TreeMenengar();
+        private BinaryTree<BinaryTree<Box>> _tree;
+        private TreeMenengar _treeMenengar;
+        private static BoxRepository _instans;
+        public static BoxRepository Instans
+        {
+            get
+            {
+                if (_instans == null)
+                {
+                    _instans = new BoxRepository();
+                }
+
+                return _instans;
+            }
+        }
+        private BoxRepository()
+        {
+            _tree = new BinaryTree<BinaryTree<Box>>();
+            _treeMenengar = new TreeMenengar(_tree);
+        }
+
+       
         public void AddBoxToDB(double x, double y, int count)
         {
             var a = _treeMenengar.GetInnerBTree(x);
@@ -31,7 +52,7 @@ namespace Boxes.DAL
             var a = _treeMenengar.GetInnerBTree(x);
             if(a == null)
             {
-                a = _context.Tree.FindCloserTree(x);
+                a = _tree.FindCloserTree(x);
                 if(a== null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
@@ -44,7 +65,7 @@ namespace Boxes.DAL
             if (b == null)
             {
                 b = a.FindCloserTree(y);
-                if(b== null)
+                if(b == null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
                     return null;
@@ -97,7 +118,7 @@ namespace Boxes.DAL
 
         public void PrintWidths()
         {
-            _context.Tree.InOrder();
+            _tree.InOrder();
         }
 
         public void PrintHeights(double x)

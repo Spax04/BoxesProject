@@ -9,7 +9,11 @@ namespace Boxes.DAL
 {
     public class TreeMenengar 
     {
-        private static DataMock _context = DataMock.Instans;
+        BinaryTree<BinaryTree<Box>> Tree;
+        public TreeMenengar(BinaryTree<BinaryTree<Box>> tree)
+        {
+            Tree = tree;
+        }
 
         /// <summary>
         /// Adding node to the <see cref="DataMock.Tree"/>
@@ -18,7 +22,7 @@ namespace Boxes.DAL
         /// <param name="x"> width of the box</param>
         public void AddTreeNode(double x)
         {
-            _context.Tree.AddNode(x, new BinaryTree<Box>());
+            Tree.AddNode(x, new BinaryTree<Box>());
         }
 
         /// <summary>
@@ -28,7 +32,7 @@ namespace Boxes.DAL
         /// <param name="y">height of the box</param>
         public void AddInnerBTree(double x, double y,int count)
         {
-            var a = _context.Tree.GetValue(x);
+            var a = Tree.GetValue(x);
             a.AddNode(y, new Box(x,y,count));
         }
 
@@ -39,7 +43,7 @@ namespace Boxes.DAL
         /// <returns></returns>
         public BinaryTree<Box> GetInnerBTree(double x) // geting inner tree
         {
-            return _context.Tree.GetValue(x);
+            return Tree.GetValue(x);
         }
 
         

@@ -45,7 +45,5 @@ namespace Boxes.DAL
         {
             return Tree.GetValue(x);
         }
-
-        
     }
 }

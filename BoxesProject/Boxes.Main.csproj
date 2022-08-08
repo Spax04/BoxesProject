@@ -54,6 +54,10 @@
       <Project>{00049495-df2f-4687-9b46-6e212a2c670a}</Project>
       <Name>Boxes.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Boxes.Models\Boxes.Models.csproj">
+      <Project>{0fea19f1-7203-4aa5-bfa9-10ca5fb35250}</Project>
+      <Name>Boxes.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

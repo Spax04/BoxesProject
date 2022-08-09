@@ -42,7 +42,7 @@ namespace Boxes.DAL
             if (b == null)
                 _treeMenengar.AddInnerBTree(x, y, count);
             else
-                b.AddBox(count);  // add 'count' boxes if a box already exist;
+                b.FillBoxes(count);  // add 'count' boxes if a box already exist;
         }
 
 
@@ -71,10 +71,7 @@ namespace Boxes.DAL
                 }
                 Console.WriteLine("We didnt find the HEIGHT you asked. Most closer HEIGHT is: " + b.Height);
             }
-
-            
             return b;
-           
         }
         public List<Box> RequestItemFromDB(double x, double y,int count)
         {
@@ -87,7 +84,7 @@ namespace Boxes.DAL
                 return null;
             }
             bList.Add(b);
-           // Console.WriteLine(b);
+            Console.WriteLine($"Box you have requested:\n{b}");
             int leftRequest = b.RequestBox(count);
             if (leftRequest > 0 )
             {
@@ -127,6 +124,7 @@ namespace Boxes.DAL
         public void PrintHeights(double x)
         {
             BinaryTree<Box> b = _treeMenengar.GetInnerBTree(x);
+            Console.WriteLine($"Box width: {x}. Heights: ");
             b.InOrder();
         }
 

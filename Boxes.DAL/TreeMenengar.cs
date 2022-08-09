@@ -16,7 +16,7 @@ namespace Boxes.DAL
         }
 
         /// <summary>
-        /// Adding node to the <see cref="DataMock.Tree"/>
+        /// Adding node to the tree
         /// Node contains BinaryTree
         /// </summary>
         /// <param name="x"> width of the box</param>

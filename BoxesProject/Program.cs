@@ -18,21 +18,20 @@ namespace Boxes.Models
 
             br.PrintWidths();
             Console.WriteLine("================");
-            Console.WriteLine("'5 tree'");
             br.PrintHeights(5);
             Console.WriteLine("================");
-            Console.WriteLine("'4 tree'");
             br.PrintHeights(4);
             Console.WriteLine("================");
-            Console.WriteLine("'6 tree'");
             br.PrintHeights(6);
             Console.WriteLine("================");
-            br.Add(7, 1,10);
+            br.Add(2, 1,10);
             br.PrintWidths();
             Console.WriteLine("==================");
             br.PrintHeights(7);
             Console.WriteLine("================");
-           List<Box> b =  br.RequestItemFromDB(5, 5,6);
+           List<Box> b =  br.RequestItemFromDB(5, 5,12);
+
+            Console.WriteLine("===================");
 
             foreach(Box b2 in b)
             {

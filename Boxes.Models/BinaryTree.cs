@@ -51,17 +51,9 @@ namespace Boxes.Models
             if(t != null)
             {
                 InOrder(t.Left);
-                Console.WriteLine(t.KeyNode + " ");
+                Console.WriteLine(t.KeyNode);
                 InOrder(t.Right);
             }
-        }
-
-        public void addValue(NodeTree<V> t)
-        {
-            if(t.ValueNode.GetType() == typeof(BinaryTree<Box>))
-            {
-            }
-
         }
 
         public void RemoveNode(double x)
@@ -265,20 +257,6 @@ namespace Boxes.Models
                 return false;
             }
             return true;
-        }
-
-        public bool find(double x)
-        {
-            return find(x, _root);
-        }
-
-        private bool find(double x, NodeTree<V> t)
-        {
-            if (t == null)
-                return false;
-            if (t.KeyNode == x)
-                return true;
-            return find(x, t.Left) || find(x, t.Right);
         }
 
         public V FindCloserTree(double x)

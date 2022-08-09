@@ -22,9 +22,14 @@ namespace Boxes.Models
             _height = y;
         }
 
-        public void AddBox(int count)
+        public void FillBoxes(int count)
         {
-            FillBoxes(count);
+            _count += count;
+            if (_count > MaxCount)
+            {
+                _count = MaxCount;
+                Console.WriteLine("There are to much boxes. Current count was returned to '100'. ");
+            }
         }
         public int RequestBox(int countRequest)
         {
@@ -36,7 +41,7 @@ namespace Boxes.Models
             
             if(_count <= MinCount && _count > 0)
             {
-                Console.WriteLine($"{_count} boxes left.");
+                Console.WriteLine($"{_count} boxes left of the size.");
             }
             if( _count < 0)
             {
@@ -46,19 +51,13 @@ namespace Boxes.Models
             else
                 return 0;
         }
-        public void FillBoxes(int count) 
-        {
-            _count += count;
-            if (_count > MaxCount)
-            {
-                _count = MaxCount;
-                Console.WriteLine("There are to much boxes. Current count was returned to '100'. ");
-            }
-        }
 
         public override string ToString()
         {
-            return $"Box's width: {_width}. Box's height: {_height}. Current count of the boxs: {_count}. Last time box war requested: {_date:g}";
+            if(_count < 0)
+                return $"Box's width: {_width}. Box's height: {_height}. Current count of the boxs: 0. Last time box war requested: {_date:g}\nBox doesn't exist any more";
+            else
+                return $"Box's width: {_width}. Box's height: {_height}. Current count of the boxs: {_count}. Last time box war requested: {_date:g}";
         }
         public int Count { get { return _count; } }
         public DateTime Date { get { return _date; } }

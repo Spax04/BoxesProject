@@ -135,8 +135,10 @@ namespace Boxes.Models
                         minPerent.Left = minimum.Right; // minimums perent take a node of the minimum RIGHT node
                     }
                     minimum.Left = node.Left;                    // 'minimum' takes the RIGHT and LEFT of the 'node'
-                    if(node.Right != minimum)
+                    if (node.Right != minimum)
                         minimum.Right = node.Right;
+                    else
+                        node.Right = null; //&&
                     if(minPerent.Left == minimum)
                     {
                         minPerent.Left = null;
@@ -192,7 +194,7 @@ namespace Boxes.Models
             {
                 return t;
             }
-            else if (x.CompareTo(t.Right.KeyNode) < 0)
+            else if (x.CompareTo(t.KeyNode) < 0)
             {
                 return GetPerent(x, t.Left);
             }
@@ -243,11 +245,11 @@ namespace Boxes.Models
 
         private NodeTree<K, V> GetNode(K x, NodeTree<K, V> t)
         {
-            if (x.CompareTo(t.Left.KeyNode) == 0)
+            if (x.CompareTo(t.KeyNode) == 0)
             {
                 return t; 
             }
-            else if (x.CompareTo(t.Left.KeyNode) < 0)
+            else if (x.CompareTo(t.KeyNode) < 0)
             {
                 return GetNode(x, t.Left);
             }

@@ -51,7 +51,7 @@ namespace Boxes.DAL
             var a = _treeMenengar.GetInnerBTree(x);
             if(a == null)
             {
-                a = _tree.FindCloserTree(x,1.5,1.75,2);
+                a = _tree.FindCloserTree(x,1.4,1.75,2);
                 if(a== null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
@@ -63,7 +63,7 @@ namespace Boxes.DAL
             var b = GetItem(a._root.ValueNode.Width, y);
             if (b == null)
             {
-                b = a.FindCloserTree(y,1.5,1.75,2);
+                b = a.FindCloserTree(y,1.4,1.75,2);
                 if(b == null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
@@ -86,10 +86,11 @@ namespace Boxes.DAL
             bList.Add(b);
             Console.WriteLine($"Box you have requested:\n{b}");
             int leftRequest = b.RequestBox(count);
-            if (leftRequest > 0 )
+            if (leftRequest >= 0 )
             {
                 Console.WriteLine("There is a last one box in stack. The box was deleted");
                 RemoveBox(b.Width,b.Height);
+                if(leftRequest!=0)
                 bList.AddRange(RequestItemFromDB(b.Width,b.Height,leftRequest));
             }
             return bList;
@@ -154,7 +155,7 @@ namespace Boxes.DAL
             Add(15, 20, 5);
             Add(15, 10, 5);
             Add(15,5, 5);
-            Add(15, 8, 5);
+            Add(15, 11, 5);
             Add(15, 16, 5);
             Add(15, 22, 5);
 
@@ -163,7 +164,7 @@ namespace Boxes.DAL
             Add(20, 20, 5);
             Add(20, 10, 5);
             Add(20, 5, 5);
-            Add(20, 8, 5);
+            Add(20, 11, 5);
             Add(20, 16, 5);
             Add(20, 22, 5);
 
@@ -172,7 +173,7 @@ namespace Boxes.DAL
             Add(9, 20, 5);
             Add(9, 10, 5);
             Add(9, 5, 5);
-            Add(9, 8, 5);
+            Add(9, 11, 5);
             Add(9, 16, 5);
             Add(9, 22, 5);
 
@@ -181,7 +182,7 @@ namespace Boxes.DAL
             Add(6, 20, 5);
             Add(6, 10, 5);
             Add(6, 5, 5);
-            Add(6, 8, 5);
+            Add(6, 11, 5);
             Add(6, 16, 5);
             Add(6, 22, 5);
 
@@ -190,7 +191,7 @@ namespace Boxes.DAL
             Add(4, 20, 5);
             Add(4, 10, 5);
             Add(4, 5, 5);
-            Add(4, 8, 5);
+            Add(4, 11, 5);
             Add(4, 16, 5);
             Add(4, 22, 5);
 
@@ -199,7 +200,7 @@ namespace Boxes.DAL
             Add(3, 20, 5);
             Add(3, 10, 5);
             Add(3, 5, 5);
-            Add(3, 8, 5);
+            Add(3, 11, 5);
             Add(3, 16, 5);
             Add(3, 22, 5);
 
@@ -208,7 +209,7 @@ namespace Boxes.DAL
             Add(5, 20, 5);
             Add(5, 10, 5);
             Add(5, 5, 5);
-            Add(5, 8, 5);
+            Add(5, 11, 5);
             Add(5, 16, 5);
             Add(5, 22, 5);
 
@@ -217,7 +218,7 @@ namespace Boxes.DAL
             Add(7, 20, 5);
             Add(7, 10, 5);
             Add(7, 5, 5);
-            Add(7, 8, 5);
+            Add(7, 11, 5);
             Add(7, 16, 5);
             Add(7, 22, 5);
 
@@ -226,7 +227,7 @@ namespace Boxes.DAL
             Add(8, 20, 5);
             Add(8, 10, 5);
             Add(8, 5, 5);
-            Add(8, 8, 5);
+            Add(8, 11, 5);
             Add(8, 16, 5);
             Add(8, 22, 5);
 
@@ -235,7 +236,7 @@ namespace Boxes.DAL
             Add(12, 20, 5);
             Add(12, 10, 5);
             Add(12, 5, 5);
-            Add(12, 8, 5);
+            Add(12, 11, 5);
             Add(12, 16, 5);
             Add(12, 22, 5);
 
@@ -244,7 +245,7 @@ namespace Boxes.DAL
             Add(13, 20, 5);
             Add(13, 10, 5);
             Add(13, 5, 5);
-            Add(13, 8, 5);
+            Add(13, 11, 5);
             Add(13, 16, 5);
             Add(13, 22, 5);
 
@@ -253,7 +254,7 @@ namespace Boxes.DAL
             Add(13.5, 20, 5);
             Add(13.5, 10, 5);
             Add(13.5, 5, 5);
-            Add(13.5, 8, 5);
+            Add(13.5, 11, 5);
             Add(13.5, 16, 5);
             Add(13.5, 22, 5);
 
@@ -262,7 +263,7 @@ namespace Boxes.DAL
             Add(12.5, 20, 5);
             Add(12.5, 10, 5);
             Add(12.5, 5, 5);
-            Add(12.5, 8, 5);
+            Add(12.5, 11, 5);
             Add(12.5, 16, 5);
             Add(12.5, 22, 5);
 
@@ -271,7 +272,7 @@ namespace Boxes.DAL
             Add(10.5, 20, 5);
             Add(10.5, 10, 5);
             Add(10.5, 5, 5);
-            Add(10.5, 8, 5);
+            Add(10.5, 11, 5);
             Add(10.5, 16, 5);
             Add(10.5, 22, 5);
 
@@ -280,7 +281,7 @@ namespace Boxes.DAL
             Add(10, 20, 5);
             Add(10, 10, 5);
             Add(10, 5, 5);
-            Add(10, 8, 5);
+            Add(10, 11, 5);
             Add(10, 16, 5);
             Add(10, 22, 5);
 
@@ -289,7 +290,7 @@ namespace Boxes.DAL
             Add(11, 20, 5);
             Add(11, 10, 5);
             Add(11, 5, 5);
-            Add(11, 8, 5);
+            Add(11, 11, 5);
             Add(11, 16, 5);
             Add(11, 22, 5);
 
@@ -300,7 +301,7 @@ namespace Boxes.DAL
             Add(20, 20, 5);
             Add(20, 10, 5);
             Add(20, 5, 5);
-            Add(20, 8, 5);
+            Add(20, 11, 5);
             Add(20, 16, 5);
             Add(20, 22, 5);
 
@@ -309,7 +310,7 @@ namespace Boxes.DAL
             Add(25, 20, 5);
             Add(25, 10, 5);
             Add(25, 5, 5);
-            Add(25, 8, 5);
+            Add(25, 11, 5);
             Add(25, 16, 5);
             Add(25, 22, 5);
 
@@ -318,7 +319,7 @@ namespace Boxes.DAL
             Add(28, 20, 5);
             Add(28, 10, 5);
             Add(28, 5, 5);
-            Add(28, 8, 5);
+            Add(28, 11, 5);
             Add(28, 16, 5);
             Add(28, 22, 5);
 
@@ -327,7 +328,7 @@ namespace Boxes.DAL
             Add(30, 20, 5);
             Add(30, 10, 5);
             Add(30, 5, 5);
-            Add(30, 8, 5);
+            Add(30, 11, 5);
             Add(30, 16, 5);
             Add(30, 22, 5);
 
@@ -336,7 +337,7 @@ namespace Boxes.DAL
             Add(26, 20, 5);
             Add(26, 10, 5);
             Add(26, 5, 5);
-            Add(26, 8, 5);
+            Add(26, 11, 5);
             Add(26, 16, 5);
             Add(26, 22, 5);
 
@@ -345,7 +346,7 @@ namespace Boxes.DAL
             Add(22, 20, 5);
             Add(22, 10, 5);
             Add(22, 5, 5);
-            Add(22, 8, 5);
+            Add(22, 11, 5);
             Add(22, 16, 5);
             Add(22, 22, 5);
             //tree Width 22x?
@@ -353,7 +354,7 @@ namespace Boxes.DAL
             Add(23, 20, 5);
             Add(23, 10, 5);
             Add(23, 5, 5);
-            Add(23, 8, 5);
+            Add(23, 11, 5);
             Add(23, 16, 5);
             Add(23, 22, 5);
 
@@ -362,7 +363,7 @@ namespace Boxes.DAL
             Add(17, 20, 5);
             Add(17, 10, 5);
             Add(17, 5, 5);
-            Add(17, 8, 5);
+            Add(17, 11, 5);
             Add(17, 16, 5);
             Add(17, 22, 5);
 
@@ -371,7 +372,7 @@ namespace Boxes.DAL
             Add(18, 20, 5);
             Add(18, 10, 5);
             Add(18, 5, 5);
-            Add(18, 8, 5);
+            Add(18, 11, 5);
             Add(18, 16, 5);
             Add(18, 22, 5);
 
@@ -380,7 +381,7 @@ namespace Boxes.DAL
             Add(19, 20, 5);
             Add(19, 10, 5);
             Add(19, 5, 5);
-            Add(19, 8, 5);
+            Add(19, 11, 5);
             Add(19, 16, 5);
             Add(19, 22, 5);
 
@@ -389,7 +390,7 @@ namespace Boxes.DAL
             Add(16, 20, 5);
             Add(16, 10, 5);
             Add(16, 5, 5);
-            Add(16, 8, 5);
+            Add(16, 11, 5);
             Add(16, 16, 5);
             Add(16, 22, 5);
         }

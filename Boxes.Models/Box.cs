@@ -43,7 +43,7 @@ namespace Boxes.Models
             {
                 Console.WriteLine($"{_count} boxes left of the size.");
             }
-            if( _count < 0)
+            if( _count <= 0)
             {
                 Console.WriteLine("Not enough boxes of this size. Missing: " + (_count * -1));
                 return _count * -1;

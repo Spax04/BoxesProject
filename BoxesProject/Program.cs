@@ -27,9 +27,9 @@ namespace Boxes.Models
             br.Add(2, 1,10);
             br.PrintWidths();
             Console.WriteLine("==================");
-            br.PrintHeights(2);
+            br.PrintHeights(3);
             Console.WriteLine("================");
-            List<Box> b = br.RequestItemFromDB(1, 1, 1);
+            List<Box> b = br.RequestItemFromDB(3, 9, 10);
 
             Console.WriteLine("===================");
 
@@ -37,7 +37,8 @@ namespace Boxes.Models
             {
                 Console.WriteLine(b2);
             }
-
+            Console.WriteLine("==========");
+            br.PrintHeights(3);
         }
     }
 }

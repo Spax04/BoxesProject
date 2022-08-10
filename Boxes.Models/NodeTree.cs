@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace Boxes.Models
 {
-    public class NodeTree<T>
+    public class NodeTree<K,V>
     {
-        private double _key;
-        private T _value;
+        private K _key;
+        private V _value;
 
-        public NodeTree(double key, T type)
+        public NodeTree(K key, V type)
         {
             _key = key;
             _value = type;
         }
-        private NodeTree<T> _left;
-        private NodeTree<T> _right;
+        private NodeTree<K, V> _left;
+        private NodeTree<K, V> _right;
 
-        public NodeTree<T> Left
+        public NodeTree<K, V> Left
         {
             get { return _left; }
             set { _left = value; }
         }
-        public NodeTree<T> Right
+        public NodeTree<K, V> Right
         {
             get { return _right; }
             set { _right = value; }
         }
-        public double KeyNode { get { return _key; } }
-        public T ValueNode { get { return _value; } set { _value = value; } }
+        public K KeyNode { get { return _key; } }
+        public V ValueNode { get { return _value; } set { _value = value; } }
     }
 }

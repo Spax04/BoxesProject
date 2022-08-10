@@ -27,17 +27,17 @@ namespace Boxes.Models
             br.Add(2, 1,10);
             br.PrintWidths();
             Console.WriteLine("==================");
-            br.PrintHeights(7);
+            br.PrintHeights(2);
             Console.WriteLine("================");
-           List<Box> b =  br.RequestItemFromDB(5, 5,12);
+            List<Box> b = br.RequestItemFromDB(1, 1, 1);
 
             Console.WriteLine("===================");
 
-            foreach(Box b2 in b)
+            foreach (Box b2 in b)
             {
                 Console.WriteLine(b2);
             }
- 
+
         }
     }
 }

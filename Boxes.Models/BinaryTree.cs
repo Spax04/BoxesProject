@@ -3,39 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Boxes.Models
 {
-    public class BinaryTree<V>
+    public class BinaryTree<K, V> where K : IComparable<K>
     {
-        public NodeTree<V> _root;
-        
+        public NodeTree<K,V> _root;
+        static MathProvider<K> _math;
         public BinaryTree()
         {
             _root = null;
+            if (typeof(K) == typeof(double))
+                _math = new DoubleMathProvide() as MathProvider<K>;
+            else if(typeof(K) == null)
+            {
+                throw new InvalidOperationException($"Type {typeof(K).ToString()} is not suported");
+            }
         }
 
-        public void AddNode(double x,V BValue)
+        public void AddNode(K x,V BValue)
         {
             if (_root == null)
-                _root = new NodeTree<V>(x,BValue);
+                _root = new NodeTree<K, V>(x, BValue);
             else
                 AddNode(x, _root,BValue);
         }
 
-        private void AddNode(double x, NodeTree<V> t,V BValue)
+        private void AddNode(K x, NodeTree<K, V> t,V BValue)
         {
-            if (x < t.KeyNode)
+            
+            if (x.CompareTo(t.KeyNode) < 0)
             {
                 if (t.Left == null)
-                    t.Left = new NodeTree<V>(x,BValue);
+                    t.Left = new NodeTree<K,V>(x,BValue);
                 else
                     AddNode(x, t.Left,BValue);
             }
             else
             {
                 if (t.Right == null)
-                    t.Right = new NodeTree<V>(x,BValue);  
+                    t.Right = new NodeTree<K,V>(x,BValue);  
                 else
                     AddNode(x, t.Right,BValue);
             }
@@ -46,7 +54,7 @@ namespace Boxes.Models
             InOrder(_root);
         }
 
-        private void InOrder(NodeTree<V> t)
+        private void InOrder(NodeTree<K, V> t)
         {
             if(t != null)
             {
@@ -56,7 +64,7 @@ namespace Boxes.Models
             }
         }
 
-        public void RemoveNode(double x)
+        public void RemoveNode(K x)
         {
             var node = GetNode(x);
             var perent = GetPerent(x);
@@ -147,7 +155,7 @@ namespace Boxes.Models
 
             }
         }
-        public NodeTree<V> GetMiniNode(NodeTree<V> t)
+        public NodeTree<K, V> GetMiniNode(NodeTree<K, V> t)
         {
             if(t.Left == null)
             {
@@ -159,7 +167,7 @@ namespace Boxes.Models
 
 
         // Get the paerent of the object
-        public NodeTree<V> GetPerent(double x)
+        public NodeTree<K, V> GetPerent(K x)
         {
             if(_root != null)
             {
@@ -170,21 +178,21 @@ namespace Boxes.Models
                 return null;
             }
         }
-        private NodeTree<V> GetPerent(double x, NodeTree<V> t)
+        private NodeTree<K, V> GetPerent(K x, NodeTree<K, V> t)
         {
             if (t == null)
             {
                 return null;
             }
-            if (t.Left != null && t.Left.KeyNode == x)
+            if (t.Left != null && x.CompareTo(t.Left.KeyNode) == 0)
             {
                 return t;
             }
-            else if(t.Right != null && t.Right.KeyNode == x)
+            else if(t.Right != null && x.CompareTo(t.Right.KeyNode) == 0)
             {
                 return t;
             }
-            else if (x < t.KeyNode)
+            else if (x.CompareTo(t.Right.KeyNode) < 0)
             {
                 return GetPerent(x, t.Left);
             }
@@ -195,7 +203,7 @@ namespace Boxes.Models
         }
 
         //Get any object
-        public V GetValue(double x)
+        public V GetValue(K x)
         {
             if (_root != null)
                 return GetValue(x, _root);
@@ -205,17 +213,17 @@ namespace Boxes.Models
            
         }
 
-        private V GetValue(double x, NodeTree<V> t)
+        private V GetValue(K x, NodeTree<K, V> t)
         {
             if(t == null)
             {
                 return default(V);
             }
-            if (x == t.KeyNode)
+            if (x.CompareTo(t.KeyNode) == 0)
             {
                 return t.ValueNode; // this returns null!!!  // it returns null bcs Valuee isnt created
             }
-            else if(x < t.KeyNode)
+            else if(x.CompareTo(t.KeyNode) < 0)
             {
                 return GetValue(x, t.Left);
             }
@@ -225,7 +233,7 @@ namespace Boxes.Models
             }
         }
 
-        public NodeTree<V> GetNode(double x)
+        public NodeTree<K, V> GetNode(K x)
         {
             if (_root != null)
                 return GetNode(x, _root);
@@ -233,13 +241,13 @@ namespace Boxes.Models
                 return null;
         }
 
-        private NodeTree<V> GetNode(double x, NodeTree<V> t)
+        private NodeTree<K, V> GetNode(K x, NodeTree<K, V> t)
         {
-            if (x == t.KeyNode)
+            if (x.CompareTo(t.Left.KeyNode) == 0)
             {
                 return t; 
             }
-            else if (x < t.KeyNode)
+            else if (x.CompareTo(t.Left.KeyNode) < 0)
             {
                 return GetNode(x, t.Left);
             }
@@ -249,9 +257,9 @@ namespace Boxes.Models
             }
         }
 
-        public bool IfExist(double x)
+        public bool IfExist(K x)
         {
-            NodeTree<V> t = GetNode(x);
+            NodeTree<K, V> t = GetNode(x);
             if(t == null)
             {
                 return false;
@@ -259,42 +267,39 @@ namespace Boxes.Models
             return true;
         }
 
-        public V FindCloserTree(double x)
+        public V FindCloserTree(K x,K rangeOne,K rangeTwo,K rangeThree)
         {
-            V a = FindCloserTree(x,0.5,_root);
+            V a = FindCloserTree(x, rangeOne, _root);
             if(a == null)
             {
-                a = FindCloserTree(x,0.75,_root);
+                a = FindCloserTree(x, rangeTwo, _root);
                 if(a == null)
                 {
-                    a = FindCloserTree(x, 2, _root);
+                    a = FindCloserTree(x, rangeThree, _root);
                 }
             }
             return a;
         }
 
-        private V FindCloserTree(double x,double prosent, NodeTree<V> t)
+        private V FindCloserTree(K p,K prosent, NodeTree<K, V> t)
         {
-            double maxRange = x;
-            if(prosent == 2)
-                maxRange = x * prosent;
-            else 
-                maxRange += x * prosent;
+            
+            K maxRange = _math.Multiply(p, prosent);
 
             if(t == null)
             {
                 return default(V);
             }
-            if (t.KeyNode <= maxRange && t.KeyNode > x)
+            if (t.KeyNode.CompareTo(maxRange) <=0  && t.KeyNode.CompareTo(p) > 0)
             {
                 return t.ValueNode;
-            }else if(t.KeyNode > maxRange)
+            }else if(t.KeyNode.CompareTo(maxRange) > 0)
             {
-                return FindCloserTree(x,prosent, t.Left);
+                return FindCloserTree(p,prosent, t.Left);
             }
             else
             {
-                return FindCloserTree(x, prosent, t.Right);
+                return FindCloserTree(p, prosent, t.Right);
             }
             
         }

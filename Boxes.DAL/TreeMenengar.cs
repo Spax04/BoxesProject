@@ -9,8 +9,8 @@ namespace Boxes.DAL
 {
     public class TreeMenengar 
     {
-        BinaryTree<BinaryTree<Box>> Tree;
-        public TreeMenengar(BinaryTree<BinaryTree<Box>> tree)
+        BinaryTree<double, BinaryTree<double, Box>> Tree;
+        public TreeMenengar(BinaryTree<double,BinaryTree<double,Box>> tree)
         {
             Tree = tree;
         }
@@ -22,7 +22,7 @@ namespace Boxes.DAL
         /// <param name="x"> width of the box</param>
         public void AddTreeNode(double x)
         {
-            Tree.AddNode(x, new BinaryTree<Box>());
+            Tree.AddNode(x, new BinaryTree<double, Box>());
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Boxes.DAL
         /// </summary>
         /// <param name="x">width of the box</param>
         /// <returns></returns>
-        public BinaryTree<Box> GetInnerBTree(double x) // geting inner tree
+        public BinaryTree<double, Box> GetInnerBTree(double x) // geting inner tree
         {
             return Tree.GetValue(x);
         }

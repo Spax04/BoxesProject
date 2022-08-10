@@ -44,6 +44,8 @@
     <Compile Include="BinaryTree.cs" />
     <Compile Include="Box.cs" />
     <Compile Include="CustomQueue.cs" />
+    <Compile Include="Math\DoubleMathProvide.cs" />
+    <Compile Include="Math\MathProvider.cs" />
     <Compile Include="NodeTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -9,7 +9,7 @@ namespace Boxes.DAL
 {
     public class BoxRepository : IRepository<Box>
     {
-        private BinaryTree<BinaryTree<Box>> _tree;
+        private BinaryTree<double,BinaryTree<double,Box>> _tree;
         private TreeMenengar _treeMenengar;
         private static BoxRepository _instans;
         public static BoxRepository Instans
@@ -26,7 +26,7 @@ namespace Boxes.DAL
         }
         private BoxRepository()
         {
-            _tree = new BinaryTree<BinaryTree<Box>>();
+            _tree = new BinaryTree<double,BinaryTree<double,Box>>();
             _treeMenengar = new TreeMenengar(_tree);
             Init();
         }
@@ -51,7 +51,7 @@ namespace Boxes.DAL
             var a = _treeMenengar.GetInnerBTree(x);
             if(a == null)
             {
-                a = _tree.FindCloserTree(x);
+                a = _tree.FindCloserTree(x,1.5,1.75,2);
                 if(a== null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
@@ -63,7 +63,7 @@ namespace Boxes.DAL
             var b = GetItem(a._root.ValueNode.Width, y);
             if (b == null)
             {
-                b = a.FindCloserTree(y);
+                b = a.FindCloserTree(y,1.5,1.75,2);
                 if(b == null)
                 {
                     Console.WriteLine("Unsuccessful attempt to find a suitable box.");
@@ -123,7 +123,7 @@ namespace Boxes.DAL
 
         public void PrintHeights(double x)
         {
-            BinaryTree<Box> b = _treeMenengar.GetInnerBTree(x);
+            BinaryTree<double,Box> b = _treeMenengar.GetInnerBTree(x);
             Console.WriteLine($"Box width: {x}. Heights: ");
             b.InOrder();
         }
@@ -131,7 +131,7 @@ namespace Boxes.DAL
         // Private ------------
         public Box GetItem(double x, double y)
         {
-            BinaryTree<Box> a = _treeMenengar.GetInnerBTree(x);
+            BinaryTree<double,Box> a = _treeMenengar.GetInnerBTree(x);
 
             if (a == null) return null;
             return a.GetValue(y);

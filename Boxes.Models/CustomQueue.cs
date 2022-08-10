@@ -8,7 +8,7 @@ namespace Boxes.Models
 {
     public class CustomQueue<V>
     {
-        public int Id { get; set; }
+       /* public int Id { get; set; }
         public V Value { get; set; }
 
         private List<V> _items { get; set; }
@@ -27,6 +27,6 @@ namespace Boxes.Models
         public void Delete(V t)
         {
             t = default(V); 
-        }
+        }*/
     }
 }

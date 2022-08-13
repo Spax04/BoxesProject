@@ -17,17 +17,17 @@ namespace Boxes.Models
 
 
             br.PrintInnerTrees(3);
-
-           /* foreach(var a in br.RequestItemFromDB(3, 9, 11))
+            Console.WriteLine("===================");
+            var IE = br.RequestItemFromDB(3, 9, 21);
+            foreach (var a in IE)
             {
                 Console.WriteLine(a);
             }
-*/
-            Console.WriteLine("===================");
 
             
-            Console.WriteLine("==========");
             
+            Console.WriteLine("==========");
+            br.PrintInnerTrees(3);
         }
     }
 }

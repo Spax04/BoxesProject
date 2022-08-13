@@ -117,9 +117,12 @@ namespace Boxes.Models
                     var minPerent = GetPerent(minimum.KeyNode); //find out his perent
                     if (minimum.Right != null) // if minimum has a right node
                     {  
+                        if(minPerent != node)
                         minPerent.Left = minimum.Right; // minimums perent take a node of the minimum RIGHT node
                     }
+                    if(minimum.Left != minimum.Right)
                     minimum.Left = node.Left;                    // 'minimum' takes the RIGHT and LEFT of the 'node'
+                   // node.Left = null;
                     if (node.Right != minimum)
                         minimum.Right = node.Right;
                     else
@@ -130,9 +133,7 @@ namespace Boxes.Models
                     }
                     if(perent == null)
                     {
-                        minimum.Left = node.Left;
                         _root = minimum;
-                        AddNode(minimum.Left.KeyNode,minimum.ValueNode);
                     }else if(perent.Right == node)
                         perent.Right = minimum;// conecting the nodes perent with the 'minimum'
                     else
@@ -331,10 +332,10 @@ namespace Boxes.Models
         {
             if (node != null)
             {
-                foreach (V val in InOrderNode(node.Left))
+                foreach (NodeTree<K, V> val in InOrderNode(node.Left))
                     yield return val;
                 yield return node;
-                foreach (V val in InOrderNode(node.Right))
+                foreach (NodeTree<K, V> val in InOrderNode(node.Right))
                     yield return val;
             }
         }
@@ -385,6 +386,11 @@ namespace Boxes.Models
                     yield return val;
                 yield return node;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Tree's Node Key : {_root.KeyNode}";
         }
     }
 }

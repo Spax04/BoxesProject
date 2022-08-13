@@ -81,18 +81,19 @@ namespace Boxes.DAL
             if (b == null)
             {
                 Console.WriteLine("There are not enought boxes for your size.");
-                yield return null;
+                yield break;
             }
-            yield return b;
+            /*yield return b;*/
             Console.WriteLine($"Box you have requested:\n{b}");
             int leftRequest = b.RequestBox(count);
-            if (leftRequest >= 0 )
+            if (leftRequest > 0 )
             {
                 Console.WriteLine("There is a last one box in stack. The box was deleted");
                 RemoveBox(b.Width,b.Height);
-                if(leftRequest!=0)
-                RequestItemFromDB(b.Width,b.Height,leftRequest);
             }
+            if (leftRequest != 0)
+            foreach (Box nb in RequestItemFromDB(x, y, leftRequest))
+                yield return nb;
         }
 
         public void RefillBoxes(double x, double y, int count)
@@ -139,13 +140,13 @@ namespace Boxes.DAL
         {
             // Left tree ---------------
             //tree Width 15x?
-            Add(15, 15, 5);
-            Add(15, 20, 5);
-            Add(15, 10, 5);
-            Add(15,5, 5);
-            Add(15, 11, 5);
-            Add(15, 16, 5);
-            Add(15, 22, 5);
+            Add(15.5, 15, 5);
+            Add(15.5, 20, 5);
+            Add(15.5, 10, 5);
+            Add(15.5, 5, 5);
+            Add(15.5, 11, 5);
+            Add(15.5, 16, 5);
+            Add(15.5, 22, 5);
 
             //tree Width 20x?
             Add(20, 15, 5);
@@ -393,9 +394,15 @@ namespace Boxes.DAL
         {
             BinaryTree<double, Box> YTree = _tree.GetValue(x);
 
-            foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }
-    
-                    
+            foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }       
+        }
+
+        public IEnumerable GetTreesKey()
+        {
+            foreach (var YTree in _tree.GetEnumerator(Order.inOrder))
+            {
+                yield return YTree;
+            }
         }
 
         public void Print(IEnumerable items)
@@ -409,6 +416,11 @@ namespace Boxes.DAL
         public void PrintInnerTrees(double x)
         {
             Print(GetBoxesInTree(x));
+        }
+
+        public void PrintTrees()
+        {
+            Print(GetTreesKey());
         }
 
     }

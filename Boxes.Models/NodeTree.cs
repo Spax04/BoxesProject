@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Boxes.Models
 {
-    public class NodeTree<K,V>
+    public class NodeTree<K,V> 
     {
         private K _key;
         private V _value;
@@ -31,5 +31,10 @@ namespace Boxes.Models
         }
         public K KeyNode { get { return _key; } }
         public V ValueNode { get { return _value; } set { _value = value; } }
+
+        public override string ToString()
+        {
+            return $"Key number: {_key}";
+        }
     }
 }

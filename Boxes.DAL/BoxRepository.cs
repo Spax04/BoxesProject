@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Boxes.Models;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Boxes.DAL
 {
@@ -12,6 +13,7 @@ namespace Boxes.DAL
         private BinaryTree<double,BinaryTree<double,Box>> _tree;
         private TreeMenengar _treeMenengar;
         private static BoxRepository _instans;
+        public IEnumerable Boxes { get { return GetAllBoxes(); } }
         public static BoxRepository Instans
         {
             get
@@ -24,6 +26,7 @@ namespace Boxes.DAL
                 return _instans;
             }
         }
+
         private BoxRepository()
         {
             _tree = new BinaryTree<double,BinaryTree<double,Box>>();
@@ -31,7 +34,6 @@ namespace Boxes.DAL
             Init();
         }
 
-       
         public void Add(double x, double y, int count)
         {
             var a = _treeMenengar.GetInnerBTree(x);
@@ -44,7 +46,6 @@ namespace Boxes.DAL
             else
                 b.FillBoxes(count);  // add 'count' boxes if a box already exist;
         }
-
 
         private Box RequestItemFromDB(double x,double y)
         {
@@ -73,17 +74,16 @@ namespace Boxes.DAL
             }
             return b;
         }
-        public List<Box> RequestItemFromDB(double x, double y,int count)
+        public IEnumerable RequestItemFromDB(double x, double y,int count)
         {
-            List<Box> bList = new List<Box>();
             Box b = RequestItemFromDB(x,y);
             
             if (b == null)
             {
                 Console.WriteLine("There are not enought boxes for your size.");
-                return null;
+                yield return null;
             }
-            bList.Add(b);
+            yield return b;
             Console.WriteLine($"Box you have requested:\n{b}");
             int leftRequest = b.RequestBox(count);
             if (leftRequest >= 0 )
@@ -91,9 +91,8 @@ namespace Boxes.DAL
                 Console.WriteLine("There is a last one box in stack. The box was deleted");
                 RemoveBox(b.Width,b.Height);
                 if(leftRequest!=0)
-                bList.AddRange(RequestItemFromDB(b.Width,b.Height,leftRequest));
+                RequestItemFromDB(b.Width,b.Height,leftRequest);
             }
-            return bList;
         }
 
         public void RefillBoxes(double x, double y, int count)
@@ -117,18 +116,6 @@ namespace Boxes.DAL
             Console.WriteLine(b);
         }
 
-        public void PrintWidths()
-        {
-            _tree.InOrder();
-        }
-
-        public void PrintHeights(double x)
-        {
-            BinaryTree<double,Box> b = _treeMenengar.GetInnerBTree(x);
-            Console.WriteLine($"Box width: {x}. Heights: ");
-            b.InOrder();
-        }
-
         // Private ------------
         public Box GetItem(double x, double y)
         {
@@ -150,6 +137,7 @@ namespace Boxes.DAL
 
         private void Init()
         {
+            // Left tree ---------------
             //tree Width 15x?
             Add(15, 15, 5);
             Add(15, 20, 5);
@@ -294,7 +282,7 @@ namespace Boxes.DAL
             Add(11, 16, 5);
             Add(11, 22, 5);
 
-            // Right tree-------------
+            // Right tree -------------
 
             //tree Width 20x?
             Add(20, 15, 5);
@@ -394,5 +382,34 @@ namespace Boxes.DAL
             Add(16, 16, 5);
             Add(16, 22, 5);
         }
+        public IEnumerable GetAllBoxes()
+        {
+            foreach (BinaryTree<double, Box> YTree in _tree.GetEnumeratorValue(Order.inOrder))
+                foreach (Box box in YTree.GetEnumeratorValue(Order.inOrder))
+                    yield return box;
+        }
+
+        public IEnumerable GetBoxesInTree(double x)
+        {
+            BinaryTree<double, Box> YTree = _tree.GetValue(x);
+
+            foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }
+    
+                    
+        }
+
+        public void Print(IEnumerable items)
+        {
+            foreach(var a in items)
+            {
+                Console.WriteLine(a);
+            }
+        }
+
+        public void PrintInnerTrees(double x)
+        {
+            Print(GetBoxesInTree(x));
+        }
+
     }
 }

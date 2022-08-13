@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Collections;
 
 namespace Boxes.Models
 {
@@ -29,7 +30,6 @@ namespace Boxes.Models
             else
                 AddNode(x, _root,BValue);
         }
-
         private void AddNode(K x, NodeTree<K, V> t,V BValue)
         {
             
@@ -46,21 +46,6 @@ namespace Boxes.Models
                     t.Right = new NodeTree<K,V>(x,BValue);  
                 else
                     AddNode(x, t.Right,BValue);
-            }
-        }
-
-        public void InOrder()
-        {
-            InOrder(_root);
-        }
-
-        private void InOrder(NodeTree<K, V> t)
-        {
-            if(t != null)
-            {
-                InOrder(t.Left);
-                Console.WriteLine(t.KeyNode);
-                InOrder(t.Right);
             }
         }
 
@@ -157,7 +142,7 @@ namespace Boxes.Models
 
             }
         }
-        public NodeTree<K, V> GetMiniNode(NodeTree<K, V> t)
+        private NodeTree<K, V> GetMiniNode(NodeTree<K, V> t)
         {
             if(t.Left == null)
             {
@@ -169,7 +154,7 @@ namespace Boxes.Models
 
 
         // Get the paerent of the object
-        public NodeTree<K, V> GetPerent(K x)
+        private NodeTree<K, V> GetPerent(K x)
         {
             if(_root != null)
             {
@@ -214,7 +199,6 @@ namespace Boxes.Models
             
            
         }
-
         private V GetValue(K x, NodeTree<K, V> t)
         {
             if(t == null)
@@ -242,7 +226,6 @@ namespace Boxes.Models
             else
                 return null;
         }
-
         private NodeTree<K, V> GetNode(K x, NodeTree<K, V> t)
         {
             if (x.CompareTo(t.KeyNode) == 0)
@@ -282,10 +265,8 @@ namespace Boxes.Models
             }
             return a;
         }
-
         private V FindCloserTree(K p,K prosent, NodeTree<K, V> t)
-        {
-            
+        { 
             K maxRange = _math.Multiply(p, prosent);
 
             if(t == null)
@@ -303,7 +284,107 @@ namespace Boxes.Models
             {
                 return FindCloserTree(p, prosent, t.Right);
             }
-            
+        }
+
+        public IEnumerable GetEnumeratorValue(Order ord)
+        {
+            switch (ord)
+            {
+                case Order.inOrder:
+                    return InOrderValue(_root);
+                case Order.preOrder:
+                    return PreOrderValue(_root);
+                case Order.postOrder:
+                    return PostOrderValue(_root);
+                default:
+                    return default;
+            }
+        }
+        public IEnumerable GetEnumerator(Order ord)
+        {
+            switch (ord)
+            {
+                case Order.inOrder:
+                    return InOrderNode(_root);
+                case Order.preOrder:
+                    return PreOrderNode(_root);
+                case Order.postOrder:
+                    return PostOrderNode(_root);
+                default:
+                    return default;
+            }
+        }
+
+        // InOrder ---------------
+        private IEnumerable InOrderValue(NodeTree<K,V> node)
+        {
+            if (node != null)
+            {
+                foreach (V val in InOrderValue(node.Left))
+                    yield return val;
+                yield return node.ValueNode;
+                foreach (V val in InOrderValue(node.Right))
+                    yield return val;
+            }
+        }
+        private IEnumerable InOrderNode(NodeTree<K, V> node)
+        {
+            if (node != null)
+            {
+                foreach (V val in InOrderNode(node.Left))
+                    yield return val;
+                yield return node;
+                foreach (V val in InOrderNode(node.Right))
+                    yield return val;
+            }
+        }
+        // ------------------
+
+        // PreOrder ----------------
+        private IEnumerable PreOrderValue(NodeTree<K, V> node)
+        {
+            if (node != null)
+            {
+                yield return node.ValueNode;
+                foreach (V val in PreOrderValue(node.Left))
+                    yield return val;
+                foreach (V val in PreOrderValue(node.Right))
+                    yield return val;
+            }
+        }
+        private IEnumerable PreOrderNode(NodeTree<K, V> node)
+        {
+            if (node != null)
+            {
+                yield return node;
+                foreach (V val in PreOrderNode(node.Left))
+                    yield return val;
+                foreach (V val in PreOrderNode(node.Right))
+                    yield return val;
+            }
+        }
+        //------------------
+        private IEnumerable PostOrderValue(NodeTree<K, V> node)
+        {
+            if (node != null)
+            {
+                foreach (V val in PostOrderValue(node.Left))
+                    yield return val;
+                foreach (V val in PostOrderValue(node.Right))
+                    yield return val;
+                yield return node.ValueNode;
+            }
+        }
+        private IEnumerable PostOrderNode(NodeTree<K, V> node)
+        {
+            if (node != null)
+            {
+                foreach (V val in PostOrderNode(node.Left))
+                    yield return val;
+                foreach (V val in PostOrderNode(node.Right))
+                    yield return val;
+                yield return node;
+            }
         }
     }
 }

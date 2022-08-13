@@ -13,32 +13,21 @@ namespace Boxes.Models
         static void Main(string[] args)
         {
             BoxRepository br = BoxRepository.Instans;
-             
-           
 
-            br.PrintWidths();
-            Console.WriteLine("================");
-            br.PrintHeights(5);
-            Console.WriteLine("================");
-            br.PrintHeights(4);
-            Console.WriteLine("================");
-            br.PrintHeights(6);
-            Console.WriteLine("================");
-            br.Add(2, 1,10);
-            br.PrintWidths();
-            Console.WriteLine("==================");
-            br.PrintHeights(3);
-            Console.WriteLine("================");
-            List<Box> b = br.RequestItemFromDB(3, 9, 10);
 
+
+            br.PrintInnerTrees(3);
+
+           /* foreach(var a in br.RequestItemFromDB(3, 9, 11))
+            {
+                Console.WriteLine(a);
+            }
+*/
             Console.WriteLine("===================");
 
-            foreach (Box b2 in b)
-            {
-                Console.WriteLine(b2);
-            }
+            
             Console.WriteLine("==========");
-            br.PrintHeights(3);
+            
         }
     }
 }

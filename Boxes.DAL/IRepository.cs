@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Boxes.DAL
     {
         void Add(double x,double y,int count);
 
-        List<V> RequestItemFromDB(double x,double y,int count);
+        IEnumerable RequestItemFromDB(double x,double y,int count);
 
         V GetItem(double x,double y);
     }

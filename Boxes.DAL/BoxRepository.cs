@@ -34,6 +34,12 @@ namespace Boxes.DAL
             Init();
         }
 
+        /// <summary>
+        /// Basic method for adding new Box to DB. If box already exist - count updates
+        /// </summary>
+        /// <param name="x">Box's width</param>
+        /// <param name="y">Box's height</param>
+        /// <param name="count">How many boxes to add</param>
         public void Add(double x, double y, int count)
         {
             var a = _treeMenengar.GetInnerBTree(x);
@@ -46,41 +52,72 @@ namespace Boxes.DAL
             else
                 b.FillBoxes(count);  // add 'count' boxes if a box already exist;
         }
-
+        /// <summary>
+        /// Basic method for requesting Box from DB by width and height. The method is private by defuelt
+        /// </summary>
+        /// <param name="x">Box's width</param>
+        /// <param name="y">Box's height</param>
+        /// <returns></returns>
         private Box RequestItemFromDB(double x,double y)
         {
+            bool suggestNewBox;
             var a = _treeMenengar.GetInnerBTree(x);
             if(a == null)
             {
-                a = _tree.FindCloserTree(x,1.4,1.75,2);
-                if(a== null)
+                Console.WriteLine("We didnt find the WIDTH you asked. Do you want bigger size? (True/False)");
+                suggestNewBox = Convert.ToBoolean(Console.ReadLine());
+                if (suggestNewBox)
                 {
-                    Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                    a = _tree.FindCloserTree(x, 1.4, 1.75, 2);
+                    if (a == null)
+                    {
+                        Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                        return null;
+                    }
+                    Console.WriteLine("Most closer WIDTH is: " + a._root.ValueNode.Width);
+                }
+                else
+                {
                     return null;
                 }
-                Console.WriteLine("We didnt find the WIDTH you asked. Most closer WIDTH is: "+ a._root.ValueNode.Width );
             }
 
             var b = GetItem(a._root.ValueNode.Width, y);
             if (b == null)
             {
-                b = a.FindCloserTree(y,1.4,1.75,2);
-                if(b == null)
+                Console.WriteLine("We didnt find the HEIGHT you asked. Do you want bigger size? (True/False)");
+                suggestNewBox = Convert.ToBoolean(Console.ReadLine());
+                if (suggestNewBox)
                 {
-                    Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                    b = a.FindCloserTree(y, 1.4, 1.75, 2);
+                    if (b == null)
+                    {
+                        Console.WriteLine("Unsuccessful attempt to find a suitable box.");
+                        return null;
+                    }
+                    Console.WriteLine("Most closer HEIGHT is: " + b.Height);
+                }
+                else
+                {
                     return null;
                 }
-                Console.WriteLine("We didnt find the HEIGHT you asked. Most closer HEIGHT is: " + b.Height);
             }
             return b;
         }
+        /// <summary>
+        /// Basic method for requesting amount of boxes. Method suggest to request another size if current size doesnt exist. Delete node if amount equels to 0.
+        /// </summary>
+        /// <param name="x">Box's width</param>
+        /// <param name="y">Box's height</param>
+        /// <param name="count">How many boxes to get</param>
+        /// <returns></returns>
         public IEnumerable RequestItemFromDB(double x, double y,int count)
         {
             Box b = RequestItemFromDB(x,y);
             
             if (b == null)
             {
-                Console.WriteLine("There are not enought boxes for your size.");
+                Console.WriteLine("There is no box.");
                 yield break;
             }
             /*yield return b;*/
@@ -95,7 +132,13 @@ namespace Boxes.DAL
             foreach (Box nb in RequestItemFromDB(x, y, leftRequest))
                 yield return nb;
         }
-
+        /// <summary>
+        /// Update amount boxes. Returns exception if <see cref="Box"/> doestns exist
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="count"></param>
+        /// <exception cref="ArgumentException"></exception>
         public void RefillBoxes(double x, double y, int count)
         {
             Box a = GetItem(x, y);
@@ -103,19 +146,31 @@ namespace Boxes.DAL
             {
                 a.FillBoxes(count);
             }
-            else //else a new box size was created widt max amount
+            else
             {
-                _treeMenengar.AddInnerBTree(x, y, count);
+                throw new ArgumentException("The Box doesn't exist!");
             }
         }
 
-
-        // Printings -----------------
-        public void PrintDitales(double x, double y) 
+        #region Print Methods Region
+        public void Print(IEnumerable items)
         {
-            Box b = GetItem(x, y);
-            Console.WriteLine(b);
+            foreach (var a in items)
+            {
+                Console.WriteLine(a);
+            }
         }
+
+        public void PrintInnerTrees(double x)
+        {
+            Print(GetBoxesInTree(x));
+        }
+
+        public void PrintTrees()
+        {
+            Print(GetTreesKey());
+        }
+        #endregion
 
         // Private ------------
         public Box GetItem(double x, double y)
@@ -125,7 +180,11 @@ namespace Boxes.DAL
             if (a == null) return null;
             return a.GetValue(y);
         }
-
+        /// <summary>
+        /// Method implemetns removing the <see cref="NodeTree{K, V}"/> where V is <see cref="Box"/>
+        /// </summary>
+        /// <param name="x">Box's width</param>
+        /// <param name="y">Box's height</param>
         private void RemoveBox(double x,double y)
         {
             Box box = GetItem(x, y);
@@ -136,6 +195,7 @@ namespace Boxes.DAL
             }
         }
 
+        // Example three
         private void Init()
         {
             // Left tree ---------------
@@ -383,13 +443,23 @@ namespace Boxes.DAL
             Add(16, 16, 5);
             Add(16, 22, 5);
         }
+        //----------------------
+
+        /// <summary>
+        /// Returns <see cref="IEnumerable"/> width all <see cref="Box"/>'s in <see cref="BinaryTree{K, V}"/>
+        /// </summary>
+        /// <returns>All <see cref="Box"/>'s</returns>
         public IEnumerable GetAllBoxes()
         {
             foreach (BinaryTree<double, Box> YTree in _tree.GetEnumeratorValue(Order.inOrder))
                 foreach (Box box in YTree.GetEnumeratorValue(Order.inOrder))
                     yield return box;
         }
-
+        /// <summary>
+        /// Returns all <see cref="Box"/>'s in specific <see cref="BinaryTree{K, V}"/>
+        /// </summary>
+        /// <param name="x">Inner tree in Main tree</param>
+        /// <returns><see cref="Box"/>'s</returns>
         public IEnumerable GetBoxesInTree(double x)
         {
             BinaryTree<double, Box> YTree = _tree.GetValue(x);
@@ -397,6 +467,10 @@ namespace Boxes.DAL
             foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }       
         }
 
+        /// <summary>
+        /// Return all <see cref="BinaryTree{K, V}"/> in Main tree
+        /// </summary>
+        /// <returns><see cref="BinaryTree{K, V}"/></returns>
         public IEnumerable GetTreesKey()
         {
             foreach (var YTree in _tree.GetEnumerator(Order.inOrder))
@@ -405,23 +479,6 @@ namespace Boxes.DAL
             }
         }
 
-        public void Print(IEnumerable items)
-        {
-            foreach(var a in items)
-            {
-                Console.WriteLine(a);
-            }
-        }
-
-        public void PrintInnerTrees(double x)
-        {
-            Print(GetBoxesInTree(x));
-        }
-
-        public void PrintTrees()
-        {
-            Print(GetTreesKey());
-        }
-
+    
     }
 }

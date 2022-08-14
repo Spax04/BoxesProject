@@ -46,6 +46,7 @@
     <Compile Include="CustomQueue.cs" />
     <Compile Include="Math\DoubleMathProvide.cs" />
     <Compile Include="Math\MathProvider.cs" />
+    <Compile Include="NodeQueue.cs" />
     <Compile Include="NodeTree.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

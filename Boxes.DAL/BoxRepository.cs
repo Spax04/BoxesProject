@@ -142,7 +142,7 @@ namespace Boxes.DAL
                     yield return nb;
             }
 
-            _queue.RemoveQNode(b.NodeQueue);
+            _queue.RemoveQNode(b.NodeQueue); // add to the end and check why it get recursion
             _queue.AddQNode(b.NodeQueue);
         }
         /// <summary>

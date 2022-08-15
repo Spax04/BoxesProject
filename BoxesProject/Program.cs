@@ -25,10 +25,10 @@ namespace Boxes.Models
                 Console.WriteLine(a);
             }
 
-
-
             Console.WriteLine("==========");
             br.PrintInnerTrees(3);
+            Console.WriteLine("==========");
+            br.Queue.printNodes();  
         }
     }
 }

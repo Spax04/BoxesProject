@@ -8,25 +8,53 @@ namespace Boxes.Models
 {
     public class CustomQueue<V>
     {
-       /* public int Id { get; set; }
-        public V Value { get; set; }
+        NodeQueue<V> _head,_end;
+        private int _count;
+        public int Count { get { return _count; } }
 
-        private List<V> _items { get; set; }
-        BinaryTree<V> _tree;
-        public CustomQueue(BinaryTree<V> tree)
+        public bool IsEmpty() => _head == null;
+        public CustomQueue()
         {
-            _items = new List<V>();
-            _tree = tree;
+            _end = _head = null;
         }
 
-        public void Add(V t)
+        public void AddQNode(NodeQueue<V> t)
         {
-           
+            if (IsEmpty())
+            {
+               _end = _head = new NodeQueue<V>();
+                _count++;
+            }
+            else
+            {
+               _end.Next = t;
+                t.Previous = _end;
+                _end = t;
+                _count++;
+            }
         }
 
-        public void Delete(V t)
+        public NodeQueue<V> RemoveQNode(NodeQueue<V> t)
         {
-            t = default(V); 
-        }*/
+            if (IsEmpty())
+                return null;
+            
+            NodeQueue<V> tempPrev = t.Previous;
+            NodeQueue<V> tempNext = t.Next;
+                tempPrev.Next = tempNext;
+                tempNext.Previous = tempPrev;
+
+            if (_head == null)
+                _end = null;
+            return t;
+        }
+
+        public void printNodes()
+        {
+            for(NodeQueue<V> t = _head; t != null; t = t.Next)
+            {
+                Console.WriteLine(t.ValueQNode);
+            }
+        }
     }
 }

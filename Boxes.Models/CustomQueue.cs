@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Boxes.Models
 {
-    public class CustomQueue<V>
+    public class CustomQueue
     {
-        NodeQueue<V> _head,_end;
+        NodeQueue _head,_end;
         private int _count;
         public int Count { get { return _count; } }
 
@@ -18,11 +18,11 @@ namespace Boxes.Models
             _end = _head = null;
         }
 
-        public void AddQNode(NodeQueue<V> t)
+        public void AddQNode(NodeQueue t)
         {
             if (IsEmpty())
             {
-               _end = _head = new NodeQueue<V>();
+               _end = _head = new NodeQueue(t.Index);
                 _count++;
             }
             else
@@ -34,27 +34,38 @@ namespace Boxes.Models
             }
         }
 
-        public NodeQueue<V> RemoveQNode(NodeQueue<V> t)
+        public void RemoveQNode(Guid id)
         {
             if (IsEmpty())
-                return null;
+                return;
             
-            NodeQueue<V> tempPrev = t.Previous;
-            NodeQueue<V> tempNext = t.Next;
-                tempPrev.Next = tempNext;
-                tempNext.Previous = tempPrev;
-
+            for(NodeQueue t = _head; t != null; t = t.Next)
+            {
+                if(t.Index == id)
+                {
+                    NodeQueue tempPrev = t.Previous;
+                    NodeQueue tempNext = t.Next;
+                    tempPrev.Next = tempNext;
+                    tempNext.Previous = tempPrev;
+                    t.Next = null;
+                    t.Previous = null;
+                }
+            }
+            
             if (_head == null)
                 _end = null;
-            return t;
+         
         }
 
         public void printNodes()
         {
-            for(NodeQueue<V> t = _head; t != null; t = t.Next)
+            int count = 0;
+            for(NodeQueue t = _head.Next; t.Next != null; t = t.Next)
             {
-                Console.WriteLine(t.ValueQNode);
+                Console.WriteLine((count + 1) + " === " + t.Index);
+                count++;
             }
+            Console.WriteLine(count);
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Boxes.DAL
         private static BoxRepository _instans;
 
         public IEnumerable Boxes { get { return GetAllBoxes(); } }
-        private CustomQueue<Box> _queue;
+        private CustomQueue _queue;
 
-        public CustomQueue<Box> Queue { get { return _queue; } }
+        public CustomQueue Queue { get { return _queue; } }
         public static BoxRepository Instans
         {
             get
@@ -34,7 +34,7 @@ namespace Boxes.DAL
         {
             _tree = new BinaryTree<double,BinaryTree<double,Box>>();
             _treeMenengar = new TreeMenengar(_tree);
-            _queue = new CustomQueue<Box>();
+            _queue = new CustomQueue();
             Init();
         }
 
@@ -54,7 +54,7 @@ namespace Boxes.DAL
             if (b == null)
             {
                 b = _treeMenengar.AddInnerBTree(x, y, count);
-                b.NodeQueue.ValueQNode = b;
+                
                 _queue.AddQNode(b.NodeQueue);
             }
             else
@@ -122,28 +122,34 @@ namespace Boxes.DAL
         public IEnumerable RequestItemFromDB(double x, double y,int count)
         {
             Box b = RequestItemFromDB(x,y);
-            
             if (b == null)
             {
                 Console.WriteLine("There is no box.");
                 yield break;
             }
-            Console.WriteLine($"Box you have requested:\n{b}");
-            int leftRequest = b.RequestBox(count);
-            if (leftRequest > 0 )
+            else
             {
-                Console.WriteLine("There is a last one box in stack. The box was deleted");
-                RemoveBox(b.Width,b.Height);
-            }
+                Console.WriteLine($"Box you have requested:\n{b}");
+                int leftRequest = b.RequestBox(count);
+                if (leftRequest > 0)
+                {
+                    Console.WriteLine("There is a last one box in stack. The box was deleted");
+                    _queue.RemoveQNode(b.Id);
+                    RemoveBox(b.Width, b.Height);
+                    
+                }
 
-            if (leftRequest != 0)
-            {
-                foreach (Box nb in RequestItemFromDB(x, y, leftRequest))
-                    yield return nb;
-            }
+                if (leftRequest != 0)
+                {
+                    foreach (Box nb in RequestItemFromDB(x, y, leftRequest))
+                        yield return nb;
+                }
 
-            _queue.RemoveQNode(b.NodeQueue); // add to the end and check why it get recursion
-            _queue.AddQNode(b.NodeQueue);
+                // add to the end and check why it get recursion
+                //_queue.RemoveQNode(b.NodeQueue);
+                //_queue.AddQNode(b.NodeQueue); 
+            }
+            
         }
         /// <summary>
         /// Update amount boxes. Returns exception if <see cref="Box"/> doestns exist
@@ -204,8 +210,8 @@ namespace Boxes.DAL
             if(box != null)
             {
                 var a = _treeMenengar.GetInnerBTree(box.Width);
+                _queue.RemoveQNode(box.Id);
                 a.RemoveNode(box.Height);
-                _queue.RemoveQNode(box.NodeQueue);
             }
         }
 

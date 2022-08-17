@@ -13,11 +13,12 @@ namespace Boxes.DAL
         private BinaryTree<double,BinaryTree<double,Box>> _tree;
         private TreeMenengar _treeMenengar;
         private static BoxRepository _instans;
-
+        private int MAX_EXPIRE_DAYES = 10;
+        
         public IEnumerable Boxes { get { return GetAllBoxes(); } }
-        private CustomQueue _queue;
+        private CustomQueue<Box> _queue;
 
-        public CustomQueue Queue { get { return _queue; } }
+        public CustomQueue<Box> Queue { get { return _queue; } }
         public static BoxRepository Instans
         {
             get
@@ -34,7 +35,7 @@ namespace Boxes.DAL
         {
             _tree = new BinaryTree<double,BinaryTree<double,Box>>();
             _treeMenengar = new TreeMenengar(_tree);
-            _queue = new CustomQueue();
+            _queue = new CustomQueue<Box>();
             Init();
         }
 
@@ -54,7 +55,6 @@ namespace Boxes.DAL
             if (b == null)
             {
                 b = _treeMenengar.AddInnerBTree(x, y, count);
-                
                 _queue.AddQNode(b.NodeQueue);
             }
             else
@@ -112,6 +112,7 @@ namespace Boxes.DAL
             }
             return b;
         }
+
         /// <summary>
         /// Basic method for requesting amount of boxes. Method suggest to request another size if current size doesnt exist. Delete node if amount equels to 0.
         /// </summary>
@@ -134,23 +135,19 @@ namespace Boxes.DAL
                 if (leftRequest > 0)
                 {
                     Console.WriteLine("There is a last one box in stack. The box was deleted");
-                    _queue.RemoveQNode(b.Id);
                     RemoveBox(b.Width, b.Height);
-                    
                 }
 
                 if (leftRequest != 0)
                 {
                     foreach (Box nb in RequestItemFromDB(x, y, leftRequest))
                         yield return nb;
-                }
-
-                // add to the end and check why it get recursion
-                //_queue.RemoveQNode(b.NodeQueue);
-                //_queue.AddQNode(b.NodeQueue); 
+                } 
             }
-            
+            _queue.RemoveQNode(b.NodeQueue);  // removing the qNode from the queue and adding it back to the end of the queue
+            _queue.AddQNode(b.NodeQueue);     // oldes QNode will be in the begining of the queue
         }
+
         /// <summary>
         /// Update amount boxes. Returns exception if <see cref="Box"/> doestns exist
         /// </summary>
@@ -162,13 +159,9 @@ namespace Boxes.DAL
         {
             Box a = GetItem(x, y);
             if (a != null) // if Box exist it will be refill
-            {
                 a.FillBoxes(count);
-            }
             else
-            {
                 throw new ArgumentException("The Box doesn't exist!");
-            }
         }
 
         #region Print Methods Region
@@ -210,7 +203,7 @@ namespace Boxes.DAL
             if(box != null)
             {
                 var a = _treeMenengar.GetInnerBTree(box.Width);
-                _queue.RemoveQNode(box.Id);
+                _queue.RemoveQNode(box.NodeQueue);
                 a.RemoveNode(box.Height);
             }
         }
@@ -501,5 +494,10 @@ namespace Boxes.DAL
 
         // Queue -------------------------
        
+        public void ExpireCheck()
+        {
+            if(_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYES) < DateTime.Now)
+                _queue.RemoveQNode(_queue.Head);
+        }
     }
 }

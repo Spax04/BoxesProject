@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0FEA19F1-7203-4AA5-BFA9-10CA5FB35250}</ProjectGuid>
+    <ProjectGuid>{1798BB95-9B8F-4962-9E75-38186259CBE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Boxes.Models</RootNamespace>
-    <AssemblyName>Boxes.Models</AssemblyName>
+    <RootNamespace>Boxes.Conf</RootNamespace>
+    <AssemblyName>Boxes.Conf</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,21 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryTree.cs" />
-    <Compile Include="Box.cs" />
-    <Compile Include="CustomQueue.cs" />
-    <Compile Include="Math\DoubleMathProvide.cs" />
-    <Compile Include="Math\MathProvider.cs" />
-    <Compile Include="NodeQueue.cs" />
-    <Compile Include="NodeTree.cs" />
-    <Compile Include="Order.cs" />
+    <Compile Include="ConfigData.cs" />
+    <Compile Include="Configurations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Boxes.Conf\Boxes.Conf.csproj">
-      <Project>{1798bb95-9b8f-4962-9e75-38186259cbe0}</Project>
-      <Name>Boxes.Conf</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

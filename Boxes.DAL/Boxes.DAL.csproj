@@ -50,14 +50,14 @@
     <Compile Include="TreeMenengar.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Boxes.Conf\Boxes.Conf.csproj">
+      <Project>{1798bb95-9b8f-4962-9e75-38186259cbe0}</Project>
+      <Name>Boxes.Conf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Boxes.Models\Boxes.Models.csproj">
       <Project>{0fea19f1-7203-4aa5-bfa9-10ca5fb35250}</Project>
       <Name>Boxes.Models</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="projectConfig.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

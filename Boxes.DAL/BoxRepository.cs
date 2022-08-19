@@ -5,15 +5,17 @@ using System.Text;
 using Boxes.Models;
 using System.Threading.Tasks;
 using System.Collections;
+using Boxes.Conf;
 
 namespace Boxes.DAL
 {
     public class BoxRepository : IRepository<Box>
     {
+        private static Configurations _config = Configurations.Instans;
         private BinaryTree<double,BinaryTree<double,Box>> _tree;
         private TreeMenengar _treeMenengar;
         private static BoxRepository _instans;
-        private int MAX_EXPIRE_DAYES = 10;
+        private int MAX_EXPIRE_DAYS = _config.Data.EXPIRE_DAYS;
         
         public IEnumerable Boxes { get { return GetAllBoxes(); } }
         private CustomQueue<Box> _queue;
@@ -110,6 +112,12 @@ namespace Boxes.DAL
                     return null;
                 }
             }
+            if (b != null)
+            {
+                _queue.ReplaceQNode(b.NodeQueue);
+            }
+            // ALEX -- fix putting QNode to the end of the queue
+
             return b;
         }
 
@@ -130,6 +138,7 @@ namespace Boxes.DAL
             }
             else
             {
+
                 Console.WriteLine($"Box you have requested:\n{b}");
                 int leftRequest = b.RequestBox(count);
                 if (leftRequest > 0)
@@ -144,8 +153,8 @@ namespace Boxes.DAL
                         yield return nb;
                 } 
             }
-            _queue.RemoveQNode(b.NodeQueue);  // removing the qNode from the queue and adding it back to the end of the queue
-            _queue.AddQNode(b.NodeQueue);     // oldes QNode will be in the begining of the queue
+
+
         }
 
         /// <summary>
@@ -204,6 +213,7 @@ namespace Boxes.DAL
             {
                 var a = _treeMenengar.GetInnerBTree(box.Width);
                 _queue.RemoveQNode(box.NodeQueue);
+
                 a.RemoveNode(box.Height);
             }
         }
@@ -496,7 +506,7 @@ namespace Boxes.DAL
        
         public void ExpireCheck()
         {
-            if(_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYES) < DateTime.Now)
+            if(_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
                 _queue.RemoveQNode(_queue.Head);
         }
     }

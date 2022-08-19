@@ -22,7 +22,7 @@ namespace Boxes.Models
         {
             if (IsEmpty())
             {
-               _end = _head = new NodeQueue<V>();
+               _end = _head = t;
                 _count++;
             }
             else
@@ -34,30 +34,71 @@ namespace Boxes.Models
             }
         }
 
+        public void ReplaceQNode(NodeQueue<V> t)
+        {
+            if (IsEmpty())
+                return;
+            if (t == _end)
+            {
+                t.Previous = _end;
+                t.Previous.Next = null;
+            }
+            else if (t == Head)
+            {
+                t.Next = Head;
+                t.Next.Previous = null;
+            }
+            else
+            {
+                t.Previous.Next = t.Next;
+                t.Next.Previous = t.Previous;
+                t.Next = null;
+                t.Previous = null;
+            }
+
+            _end.Next = t;
+            t.Previous = _end;
+            _end = t;
+        }
+
         public void RemoveQNode(NodeQueue<V> t)
         {
             if (IsEmpty())
                 return;
+            if(t == _end)
+            {
+                _end = t.Previous;
+                t.Previous.Next = null;
+                t.Previous = null;
+            }
+            else if(t == Head)
+            {
+               t.Next = Head;
+                t.Next.Previous = null;
+                t.Next = null;
+            }
+            else
+            {
+                t.Previous.Next = t.Next;
+                t.Next.Previous = t.Previous;
+                t.Next = null;
+                t.Previous = null;
+            }
             
-            t.Previous.Next = t.Next;
-            t.Next.Previous = t.Previous;
-            t.Next = null;
-            t.Previous = null;
             
             if (_head == null)
                 _end = null;
-         
+            _count--;
         }
 
         public void printNodes()
         {
             int count = 0;
-            for(NodeQueue<V> t = _head.Next; t.Next != null; t = t.Next)
+            for(NodeQueue<V> t = _head; t.Next != null; t = t.Next)
             {
-                Console.WriteLine((count + 1));
                 count++;
+                Console.WriteLine(count);
             }
-            Console.WriteLine(count);
         }
     }
 }

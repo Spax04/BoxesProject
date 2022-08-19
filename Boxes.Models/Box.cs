@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Boxes.Conf;
 
 namespace Boxes.Models
 {
@@ -12,9 +13,10 @@ namespace Boxes.Models
         private DateTime _date;
  
         private NodeQueue<Box> _queueNode;
+        private static Configurations _config = Configurations.Instans;
 
-        private const int MAX_BOXES = 100;  // CONFIG
-        private const int MIN_BOXES = 10;   // CONFIG
+        private int MAX_BOXES = _config.Data.MAX_BOXES;  // CONFIG
+        private int MIN_BOXES = _config.Data.MIN_BOXES;   // CONFIG
         private readonly double _width;
         private readonly double _height;
         public Box(double x,double y,int count)

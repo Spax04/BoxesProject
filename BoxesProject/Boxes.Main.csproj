@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="config.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Boxes.DAL\Boxes.DAL.csproj">

@@ -1,0 +1,6 @@
+﻿{
+
+  "MAX_BOXES": 50,
+  "MIN_BOXES": 10,
+  "EXPIRE_DAYS": 10
+}

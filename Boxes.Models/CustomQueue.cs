@@ -97,8 +97,8 @@ namespace Boxes.Models
             for(NodeQueue<V> t = _head; t.Next != null; t = t.Next)
             {
                 count++;
-                Console.WriteLine(count);
             }
+            Console.WriteLine(count);
         }
     }
 }

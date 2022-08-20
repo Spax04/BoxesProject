@@ -213,7 +213,6 @@ namespace Boxes.DAL
             {
                 var a = _treeMenengar.GetInnerBTree(box.Width);
                 _queue.RemoveQNode(box.NodeQueue);
-
                 a.RemoveNode(box.Height);
             }
         }
@@ -503,11 +502,12 @@ namespace Boxes.DAL
         }
 
         // Queue -------------------------
-       
         public void ExpireCheck()
         {
             if(_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
-                _queue.RemoveQNode(_queue.Head);
+            {
+                RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
+            }
         }
     }
 }

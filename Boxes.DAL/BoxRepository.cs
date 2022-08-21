@@ -504,9 +504,16 @@ namespace Boxes.DAL
         // Queue -------------------------
         public void ExpireCheck()
         {
-            if(_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
+            bool check = true;
+            while (check)
             {
-                RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
+                check = false;
+                if(_queue.Head != null)
+                if (_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
+                {
+                    RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
+                        check = true;
+                }
             }
         }
     }

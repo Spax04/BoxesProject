@@ -65,7 +65,11 @@ namespace Boxes.Models
         {
             if (IsEmpty())
                 return;
-            if(t == _end)
+            if(Head == _end)
+            {
+                _head = _end = null;
+            }
+            else if(t == _end)
             {
                 _end = t.Previous;
                 t.Previous.Next = null;

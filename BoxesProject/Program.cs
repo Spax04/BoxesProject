@@ -18,7 +18,7 @@ namespace Boxes.Models
             br.PrintInnerTrees(3);
             br.PrintTrees();
             Console.WriteLine("===================");
-            var IE = br.RequestItemFromDB(3, 9, 2);
+            var IE = br.RequestItemFromDB(3, 9, 16);
             foreach (var a in IE)
             {
                 Console.WriteLine(a);
@@ -27,7 +27,9 @@ namespace Boxes.Models
             Console.WriteLine("==========");
             br.PrintInnerTrees(3);
             Console.WriteLine("==========");
-            br.Queue.printNodes();  
+            br.Queue.printNodes();
+
+            Console.ReadLine();
         }
     }
 }

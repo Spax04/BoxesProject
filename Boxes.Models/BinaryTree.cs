@@ -22,7 +22,11 @@ namespace Boxes.Models
                 throw new InvalidOperationException($"Type {typeof(K).ToString()} is not suported");
             }
         }
-
+        /// <summary>
+        /// Adding a new Node to the Binary Tree
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="BValue"></param>
         public void AddNode(K x,V BValue)
         {
             if (_root == null)
@@ -49,6 +53,10 @@ namespace Boxes.Models
             }
         }
 
+        /// <summary>
+        /// Removing node from the Binary Tree
+        /// </summary>
+        /// <param name="x">Key of the Node</param>
         public void RemoveNode(K x)
         {
             var node = GetNode(x);
@@ -122,25 +130,22 @@ namespace Boxes.Models
                     }
                     if(minimum.Left != minimum.Right)
                     minimum.Left = node.Left;                    // 'minimum' takes the RIGHT and LEFT of the 'node'
-                   // node.Left = null;
                     if (node.Right != minimum)
                         minimum.Right = node.Right;
                     else
-                        node.Right = null; //&&
+                        node.Right = null; 
                     if(minPerent.Left == minimum)
                     {
                         minPerent.Left = null;
                     }
-                    if(perent == null)
+                    if(perent == null)  // perent is null when Node is a Root
                     {
                         _root = minimum;
                     }else if(perent.Right == node)
                         perent.Right = minimum;// conecting the nodes perent with the 'minimum'
                     else
                         perent.Left = minimum;
-                   
                 }
-
             }
         }
         private NodeTree<K, V> GetMiniNode(NodeTree<K, V> t)
@@ -153,8 +158,11 @@ namespace Boxes.Models
             
         }
 
-
-        // Get the paerent of the object
+        /// <summary>
+        /// Get the paerent of the chosen Node
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         private NodeTree<K, V> GetPerent(K x)
         {
             if(_root != null)
@@ -190,7 +198,11 @@ namespace Boxes.Models
             }
         }
 
-        //Get any object
+        /// <summary>
+        /// Get Value of the Node
+        /// </summary>
+        /// <param name="x">Key of the Node</param>
+        /// <returns></returns>
         public V GetValue(K x)
         {
             if (_root != null)
@@ -220,6 +232,11 @@ namespace Boxes.Models
             }
         }
 
+        /// <summary>
+        /// Getting a Node by Key
+        /// </summary>
+        /// <param name="x">Key of the Node</param>
+        /// <returns></returns>
         public NodeTree<K, V> GetNode(K x)
         {
             if (_root != null)
@@ -242,7 +259,11 @@ namespace Boxes.Models
                 return GetNode(x, t.Right);
             }
         }
-
+        /// <summary>
+        /// Checking if Node exist
+        /// </summary>
+        /// <param name="x">Key of the Node</param>
+        /// <returns>returns true if node exist</returns>
         public bool IfExist(K x)
         {
             NodeTree<K, V> t = GetNode(x);
@@ -253,6 +274,14 @@ namespace Boxes.Models
             return true;
         }
 
+        /// <summary>
+        /// Finding a closer try depents of the key 
+        /// </summary>
+        /// <param name="x">Key of the node</param>
+        /// <param name="rangeOne">Minimum range</param>
+        /// <param name="rangeTwo">Midle ragne</param>
+        /// <param name="rangeThree">Max range</param>
+        /// <returns></returns>
         public V FindCloserTree(K x,K rangeOne,K rangeTwo,K rangeThree)
         {
             V a = FindCloserTree(x, rangeOne, _root);

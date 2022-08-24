@@ -6,6 +6,7 @@ using Boxes.Models;
 using System.Threading.Tasks;
 using System.Collections;
 using Boxes.Conf;
+using System.Windows.Threading;
 
 namespace Boxes.DAL
 {
@@ -16,7 +17,8 @@ namespace Boxes.DAL
         private TreeMenengar _treeMenengar;
         private static BoxRepository _instans;
         private int MAX_EXPIRE_DAYS = _config.Data.EXPIRE_DAYS;
-        
+        DispatcherTimer timer;
+
         public IEnumerable Boxes { get { return GetAllBoxes(); } }
         private CustomQueue<Box> _queue;
 
@@ -39,6 +41,7 @@ namespace Boxes.DAL
             _treeMenengar = new TreeMenengar(_tree);
             _queue = new CustomQueue<Box>();
             Init();
+            TimerCheck();
         }
 
         /// <summary>
@@ -217,7 +220,75 @@ namespace Boxes.DAL
             }
         }
 
-        // Example three
+        /// <summary>
+        /// Returns <see cref="IEnumerable"/> width all <see cref="Box"/>'s in <see cref="BinaryTree{K, V}"/>
+        /// </summary>
+        /// <returns>All <see cref="Box"/>'s</returns>
+        public IEnumerable GetAllBoxes()
+        {
+            foreach (BinaryTree<double, Box> YTree in _tree.GetEnumeratorValue(Order.inOrder))
+                foreach (Box box in YTree.GetEnumeratorValue(Order.inOrder))
+                    yield return box;
+        }
+        /// <summary>
+        /// Returns all <see cref="Box"/>'s in specific <see cref="BinaryTree{K, V}"/>
+        /// </summary>
+        /// <param name="x">Inner tree in Main tree</param>
+        /// <returns><see cref="Box"/>'s</returns>
+        public IEnumerable GetBoxesInTree(double x)
+        {
+            BinaryTree<double, Box> YTree = _tree.GetValue(x);
+
+            foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }       
+        }
+
+        /// <summary>
+        /// Return all <see cref="BinaryTree{K, V}"/> in Main tree
+        /// </summary>
+        /// <returns><see cref="BinaryTree{K, V}"/></returns>
+        public IEnumerable GetTreesKey()
+        {
+            foreach (var YTree in _tree.GetEnumerator(Order.inOrder))
+            {
+                yield return YTree;
+            }
+        }
+
+        // Queue -------------------------
+
+        /// <summary>
+        /// Timer that implements method <see cref="ExpireCheck(object, object)"/> on pre day(24 hours)
+        /// </summary>
+        public void TimerCheck()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(1, 0, 0, 0, 0);
+            timer.Tick += ExpireCheck;
+            timer.Start();
+        }
+
+        /// <summary>
+        /// Method implements checking expire date of the box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExpireCheck(object sender, object e)
+        {
+            bool check = true;
+            while (check)
+            {
+                check = false;
+                if(_queue.Head != null)
+                if (_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
+                {
+                    RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
+                        check = true;
+                }
+            }
+        }
+        //------------------------------------------
+
+        // Example three--------
         private void Init()
         {
             // Left tree ---------------
@@ -465,56 +536,7 @@ namespace Boxes.DAL
             Add(16, 16, 5);
             Add(16, 22, 5);
         }
+
         //----------------------
-
-        /// <summary>
-        /// Returns <see cref="IEnumerable"/> width all <see cref="Box"/>'s in <see cref="BinaryTree{K, V}"/>
-        /// </summary>
-        /// <returns>All <see cref="Box"/>'s</returns>
-        public IEnumerable GetAllBoxes()
-        {
-            foreach (BinaryTree<double, Box> YTree in _tree.GetEnumeratorValue(Order.inOrder))
-                foreach (Box box in YTree.GetEnumeratorValue(Order.inOrder))
-                    yield return box;
-        }
-        /// <summary>
-        /// Returns all <see cref="Box"/>'s in specific <see cref="BinaryTree{K, V}"/>
-        /// </summary>
-        /// <param name="x">Inner tree in Main tree</param>
-        /// <returns><see cref="Box"/>'s</returns>
-        public IEnumerable GetBoxesInTree(double x)
-        {
-            BinaryTree<double, Box> YTree = _tree.GetValue(x);
-
-            foreach(Box b in YTree.GetEnumeratorValue(Order.inOrder)) { yield return b; }       
-        }
-
-        /// <summary>
-        /// Return all <see cref="BinaryTree{K, V}"/> in Main tree
-        /// </summary>
-        /// <returns><see cref="BinaryTree{K, V}"/></returns>
-        public IEnumerable GetTreesKey()
-        {
-            foreach (var YTree in _tree.GetEnumerator(Order.inOrder))
-            {
-                yield return YTree;
-            }
-        }
-
-        // Queue -------------------------
-        public void ExpireCheck()
-        {
-            bool check = true;
-            while (check)
-            {
-                check = false;
-                if(_queue.Head != null)
-                if (_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
-                {
-                    RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
-                        check = true;
-                }
-            }
-        }
     }
 }

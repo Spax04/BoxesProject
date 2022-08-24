@@ -72,6 +72,6 @@ namespace Boxes.Models
         public DateTime Date { get { return _date; } }
         public double Width { get { return _width; } }
         public double Height { get { return _height; } }
-        //public Guid Id { get { return _id; } }
+        
     }
 }

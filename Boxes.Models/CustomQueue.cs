@@ -18,6 +18,10 @@ namespace Boxes.Models
             _end = _head = null;
         }
 
+        /// <summary>
+        /// Method allows to add a new <see cref="NodeQueue{V}"/> to the end of <see cref="CustomQueue{V}"/>
+        /// </summary>
+        /// <param name="t">The new <see cref="NodeQueue{V}"/></param>
         public void AddQNode(NodeQueue<V> t)
         {
             if (IsEmpty())
@@ -34,6 +38,10 @@ namespace Boxes.Models
             }
         }
 
+        /// <summary>
+        /// Taka a given <see cref="NodeQueue{V}"/> and placing it to the end of the <see cref="CustomQueue{V}"/>
+        /// </summary>
+        /// <param name="t">The chosen <see cref="NodeQueue{V}"/></param>
         public void ReplaceQNode(NodeQueue<V> t)
         {
             if (IsEmpty())
@@ -61,6 +69,10 @@ namespace Boxes.Models
             _end = t;
         }
 
+        /// <summary>
+        ///  Method allows to remove a <see cref="NodeQueue{V}"/> from the HEAD of <see cref="CustomQueue{V}"/>
+        /// </summary>
+        /// <param name="t">The <see cref="NodeQueue{V}"/> that Up to remove</param>
         public void RemoveQNode(NodeQueue<V> t)
         {
             if (IsEmpty())
@@ -95,6 +107,7 @@ namespace Boxes.Models
             _count--;
         }
 
+        // Node for checking =============
         public void printNodes()
         {
             int count = 0;

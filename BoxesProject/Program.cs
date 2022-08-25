@@ -14,22 +14,25 @@ namespace Boxes.Models
         static void Main(string[] args)
         {
             BoxRepository br = BoxRepository.Instans;
-         
+/*
             br.PrintInnerTrees(3);
-            br.PrintTrees();
+            br.PrintTrees();*/
             Console.WriteLine("===================");
-            var IE = br.RequestItemFromDB(3, 9, 16);
+            var IE = br.RequestItemFromDB(3.9,14, 60);
             foreach (var a in IE)
             {
                 Console.WriteLine(a);
             }
+            /* foreach(var b in br.Boxes)
+             {
+                 Console.WriteLine(b);
+             }*/
+            /* Console.WriteLine("==========");
+             br.PrintInnerTrees(3);
+             Console.WriteLine("==========");
+             br.Queue.printNodes();
 
-            Console.WriteLine("==========");
-            br.PrintInnerTrees(3);
-            Console.WriteLine("==========");
-            br.Queue.printNodes();
-
-            Console.ReadLine();
+             Console.ReadLine();*/
         }
     }
 }

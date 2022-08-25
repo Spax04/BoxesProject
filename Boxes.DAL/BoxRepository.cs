@@ -279,7 +279,7 @@ namespace Boxes.DAL
             {
                 check = false;
                 if(_queue.Head != null)
-                if (_queue.Head.ValueQNode.Date.AddDays(MAX_EXPIRE_DAYS) < DateTime.Now)
+                if (_queue.Head.ValueQNode.Date + new TimeSpan(MAX_EXPIRE_DAYS,0,0,0) < DateTime.Now)
                 {
                     RemoveBox(_queue.Head.ValueQNode.Width, _queue.Head.ValueQNode.Height);
                         check = true;
